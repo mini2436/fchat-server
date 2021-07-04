@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>fchat-server</artifactId>
+        <groupId>xyz.mini2436</groupId>
+        <version>0.0.1-dev</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>fchat-doc</artifactId>
+
+    <properties>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
+        <smart-doc.version>2.0.6</smart-doc.version>
+        <screw.version>1.0.5</screw.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>xyz.mini2436</groupId>
+            <artifactId>fchat-basic</artifactId>
+            <version>0.0.1-dev</version>
+        </dependency>
+
+        <dependency>
+            <groupId>xyz.mini2436</groupId>
+            <artifactId>fchat-api</artifactId>
+            <version>0.0.1-dev</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--接口文档插件-->
+            <plugin>
+                <groupId>com.github.shalousun</groupId>
+                <artifactId>smart-doc-maven-plugin</artifactId>
+                <version>${smart-doc.version}</version>
+                <configuration>
+                    <projectName>simple-his</projectName>
+                    <configFile>./src/main/resources/smart-doc.json</configFile>
+                    <excludes>
+                        <!--                        <exclude>com.google.guava:guava</exclude>-->
+                    </excludes>
+                    <includes>
+                        <!--                        <include>com.alibaba:fastjson</include>-->
+                        <include>fun.mini2436.*</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>html</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--数据库文档插件-->
+            <plugin>
+                <groupId>cn.smallbun.screw</groupId>
+                <artifactId>screw-maven-plugin</artifactId>
+                <version>${screw.version}</version>
+                <dependencies>
+                    <!-- HikariCP -->
+                    <dependency>
+                        <groupId>com.zaxxer</groupId>
+                        <artifactId>HikariCP</artifactId>
+                        <version>3.4.5</version>
+                    </dependency>
+                    <!--mysql driver-->
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>8.0.20</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <username>root</username>
+                    <password>123456</password>
+                    <driverClassName>com.mysql.cj.jdbc.Driver</driverClassName>
+                    <jdbcUrl>jdbc:mysql://127.0.0.1:13006/simple_his</jdbcUrl>
+                    <fileType>HTML</fileType>
+                    <openOutputDir>false</openOutputDir>
+                    <produceType>freemarker</produceType>
+                    <fileName>../../../resource/database-doc/simple_his数据库文档</fileName>
+                    <description>该文档仅限用于开发参考，实际开发请以数据库为准</description>
+                    <version>${project.version}</version>
+                    <title>simple_his数据库文档</title>
+                </configuration>
+                <!--                <executions>-->
+                <!--                    <execution>-->
+                <!--                        <phase>compile</phase>-->
+                <!--                        <goals>-->
+                <!--                            <goal>run</goal>-->
+                <!--                        </goals>-->
+                <!--                    </execution>-->
+                <!--                </executions>-->
+            </plugin>
+            <!--跳过springBoot插件的配置-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
