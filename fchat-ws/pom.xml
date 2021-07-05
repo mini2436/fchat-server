@@ -12,6 +12,13 @@
 	<name>fchat-ws</name>
 	<description>FChat项目的WebSocket服务提供</description>
 	<dependencies>
+		<!--项目基础组件-->
+		<dependency>
+			<groupId>xyz.mini2436</groupId>
+			<artifactId>fchat-basic</artifactId>
+			<version>0.0.1-dev</version>
+		</dependency>
+		<!--Redis异步操作支持依赖-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>

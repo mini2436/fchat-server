@@ -1,0 +1,38 @@
+{
+  "serverUrl": "http://fchat-api-dev.mini2436.xyz",
+  "allInOne": true,
+  "isStrict": true,
+  "coverOld": true,
+  "outPath": "../../resource/api-doc",
+  "projectName": "",
+  "allInOneDocFileName":"simple_his接口文档.html",
+  "dataDictionaries": [
+    {
+      "title": "访问状态定义",
+      "enumClassName": "fun.mini2436.commonutil.enums.system.ResultEnum",
+      "codeField": "code",
+      "descField": "message"
+    },
+    {
+      "title": "异常状态定义",
+      "enumClassName": "fun.mini2436.commonutil.enums.system.ExceptionEnum",
+      "codeField": "code",
+      "descField": "message"
+    }
+  ],
+  "revisionLogs": [
+    {
+      "version": "1.0",
+      "status": "create",
+      "author": "mini2436",
+      "remarks": "面试项目API接口文档"
+    }
+  ],"requestHeaders": [
+  {
+    "name": "AuthSimpleHis",
+    "type": "string",
+    "desc": "该值在登陆接口中返回，调用网关认证必要参数",
+    "required": false
+  }
+]
+}

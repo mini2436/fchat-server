@@ -18,6 +18,8 @@
         <screw.version>1.0.5</screw.version>
     </properties>
 
+    <packaging>pom</packaging>
+
     <dependencies>
         <dependency>
             <groupId>xyz.mini2436</groupId>
@@ -47,7 +49,7 @@
                     </excludes>
                     <includes>
                         <!--                        <include>com.alibaba:fastjson</include>-->
-                        <include>fun.mini2436.*</include>
+                        <include>xyz.mini2436.fchat.*</include>
                     </includes>
                 </configuration>
                 <executions>

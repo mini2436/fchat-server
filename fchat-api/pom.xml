@@ -12,27 +12,33 @@
 	<name>fchat-api</name>
 	<description>FChat项目的API提供服务</description>
 	<dependencies>
+		<!--项目基础组件-->
 		<dependency>
 			<groupId>xyz.mini2436</groupId>
 			<artifactId>fchat-basic</artifactId>
 			<version>0.0.1-dev</version>
 		</dependency>
+		<!--RabbitMQ支持组件-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
+		<!--MongoDB异步连接驱动-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
 		</dependency>
+		<!--MySQL异步操作支持依赖-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-r2dbc</artifactId>
 		</dependency>
+		<!--MySQL异步操作支持依赖-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>
 		</dependency>
+		<!--HTTP API异步操作支持依赖-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
