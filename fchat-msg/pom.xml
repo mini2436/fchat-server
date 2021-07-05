@@ -8,7 +8,7 @@
 		<version>0.0.1-dev</version>
 	</parent>
 	<artifactId>fchat-msg</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-dev</version>
 	<name>fchat-msg</name>
 	<description>FChat项目的API提供服务</description>
 	<dependencies>

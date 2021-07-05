@@ -42,14 +42,14 @@
                 <artifactId>smart-doc-maven-plugin</artifactId>
                 <version>${smart-doc.version}</version>
                 <configuration>
-                    <projectName>simple-his</projectName>
+                    <projectName>FChat接口文档</projectName>
                     <configFile>./src/main/resources/smart-doc.json</configFile>
                     <excludes>
                         <!--                        <exclude>com.google.guava:guava</exclude>-->
                     </excludes>
                     <includes>
                         <!--                        <include>com.alibaba:fastjson</include>-->
-                        <include>xyz.mini2436.fchat.*</include>
+                        <include>xyz.mini2436.*</include>
                     </includes>
                 </configuration>
                 <executions>
@@ -84,14 +84,14 @@
                     <username>root</username>
                     <password>123456</password>
                     <driverClassName>com.mysql.cj.jdbc.Driver</driverClassName>
-                    <jdbcUrl>jdbc:mysql://127.0.0.1:13006/simple_his</jdbcUrl>
+                    <jdbcUrl>jdbc:mysql://mini2436.xyz:4306/fchat</jdbcUrl>
                     <fileType>HTML</fileType>
                     <openOutputDir>false</openOutputDir>
                     <produceType>freemarker</produceType>
-                    <fileName>../../../resource/database-doc/simple_his数据库文档</fileName>
+                    <fileName>../../resource/database-doc/fchat数据库文档</fileName>
                     <description>该文档仅限用于开发参考，实际开发请以数据库为准</description>
                     <version>${project.version}</version>
-                    <title>simple_his数据库文档</title>
+                    <title>fchat数据库文档</title>
                 </configuration>
                 <!--                <executions>-->
                 <!--                    <execution>-->

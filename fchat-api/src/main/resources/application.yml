@@ -1,1 +1,21 @@
-
+server:
+  port: 40010
+spring:
+  r2dbc:
+    username: root
+    password: 123456
+    url: r2dbcs:mysql://116.62.17.98:4306/fchat&useUnicode=true&amp&characterEncoding=utf8mb4
+  data:
+    mongodb:
+      username: root
+      password: 123456
+      host: 116.62.17.98
+      database: fchat
+      port: 27017
+  redis:
+    port: 7379
+    host: 116.62.17.98
+    password: 1234567
+seaweedFS:
+  host: 116.62.17.98
+  port: 40011

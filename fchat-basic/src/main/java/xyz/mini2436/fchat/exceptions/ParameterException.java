@@ -1,19 +1,19 @@
-package exceptions;
+package xyz.mini2436.fchat.exceptions;
 
 /**
- * 业务层异常
+ * 参数转换异常
  *
  * @author mini2436
- * @date 2021-07-05 09:15
+ * @date 2021-07-05 09:13
  **/
-public class ServiceException extends RuntimeException{
+public class ParameterException extends RuntimeException{
     /**
      * Constructs a new runtime exception with {@code null} as its
      * detail message.  The cause is not initialized, and may subsequently be
      * initialized by a call to {@link #initCause}.
      */
-    public ServiceException() {
-        super("业务层发生异常");
+    public ParameterException() {
+        super("参数或参数转换发生异常");
     }
 
     /**
@@ -24,7 +24,7 @@ public class ServiceException extends RuntimeException{
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public ServiceException(String message) {
+    public ParameterException(String message) {
         super(message);
     }
 }

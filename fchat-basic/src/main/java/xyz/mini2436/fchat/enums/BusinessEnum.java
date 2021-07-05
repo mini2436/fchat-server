@@ -1,4 +1,4 @@
-package enums;
+package xyz.mini2436.fchat.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,4 +12,12 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class BusinessEnum {
+    /**
+     * 请求状态定义
+     */
+    private final Integer code;
+    /**
+     * 状态消息定义
+     */
+    private final String content;
 }

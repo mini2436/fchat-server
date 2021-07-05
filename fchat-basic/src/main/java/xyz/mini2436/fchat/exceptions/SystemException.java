@@ -1,19 +1,19 @@
-package exceptions;
+package xyz.mini2436.fchat.exceptions;
 
 /**
- * 数据层异常
+ * 系统异常
  *
  * @author mini2436
- * @date 2021-07-05 09:14
+ * @date 2021-07-05 09:11
  **/
-public class DatabaseException extends RuntimeException{
+public class SystemException extends RuntimeException{
     /**
      * Constructs a new runtime exception with {@code null} as its
      * detail message.  The cause is not initialized, and may subsequently be
      * initialized by a call to {@link #initCause}.
      */
-    public DatabaseException() {
-        super("数据层发生异常");
+    public SystemException() {
+        super("当前系统发生未知异常");
     }
 
     /**
@@ -24,7 +24,7 @@ public class DatabaseException extends RuntimeException{
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public DatabaseException(String message) {
+    public SystemException(String message) {
         super(message);
     }
 }

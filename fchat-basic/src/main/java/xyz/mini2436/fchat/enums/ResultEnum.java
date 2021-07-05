@@ -1,4 +1,4 @@
-package enums;
+package xyz.mini2436.fchat.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,15 +15,15 @@ public enum  ResultEnum {
     /**
      * 请求成功定义
      */
-    success(200,"request success"),
+    SUCCESS(2000,"request success"),
     /**
      * 请求失败
      */
-    FAIL(404,"request fail"),
+    FAIL(4000,"request fail"),
     /**
      * 服务端数据处理异常
      */
-    ERROR(500,"server error")
+    ERROR(5000,"server error")
     ;
     /**
      * 请求状态定义
@@ -32,5 +32,5 @@ public enum  ResultEnum {
     /**
      * 状态消息定义
      */
-    private final String message;
+    private final String content;
 }
