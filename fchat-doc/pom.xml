@@ -88,7 +88,7 @@
                     <fileType>HTML</fileType>
                     <openOutputDir>false</openOutputDir>
                     <produceType>freemarker</produceType>
-                    <fileName>../../resource/database-doc/fchat数据库文档</fileName>
+                    <fileName>fchat数据库文档</fileName>
                     <description>该文档仅限用于开发参考，实际开发请以数据库为准</description>
                     <version>${project.version}</version>
                     <title>fchat数据库文档</title>

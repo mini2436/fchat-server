@@ -3,9 +3,9 @@
   "allInOne": true,
   "isStrict": true,
   "coverOld": true,
-  "outPath": "../resource/api-doc",
+  "outPath": "./doc/",
   "projectName": "",
-  "allInOneDocFileName":"fchat接口文档.html",
+  "allInOneDocFileName": "fchat接口文档.html",
   "revisionLogs": [
     {
       "version": "0.0.1-dev",
@@ -13,12 +13,13 @@
       "author": "mini2436",
       "remarks": "面试项目API接口文档"
     }
-  ],"requestHeaders": [
-  {
-    "name": "fchat-token",
-    "type": "string",
-    "desc": "该值在登陆接口中返回,后续接口调用必传",
-    "required": true
-  }
-]
+  ],
+  "requestHeaders": [
+    {
+      "name": "fchat-token",
+      "type": "string",
+      "desc": "该值在登陆接口中返回,后续接口调用必传",
+      "required": true
+    }
+  ]
 }

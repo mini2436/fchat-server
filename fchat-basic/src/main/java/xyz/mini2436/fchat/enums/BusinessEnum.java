@@ -11,7 +11,28 @@ import lombok.Getter;
  **/
 @Getter
 @AllArgsConstructor
-public class BusinessEnum {
+public enum  BusinessEnum {
+    /**
+     * 数据异常
+     */
+    DATABASE_ERROR(5010,"数据异常"),
+    /**
+     * 消息异常
+     */
+    MESSAGE_ERROR(5020,"消息异常"),
+    /**
+     * 参数异常
+     */
+    PARAMETER_ERROR(5030,"参数异常"),
+    /**
+     * 业务处理异常
+     */
+    SERVICE_ERROR(5040,"业务处理异常"),
+    /**
+     * 系统异常
+     */
+    SYSTEM_ERROR(5050,"系统异常"),
+    ;
     /**
      * 请求状态定义
      */

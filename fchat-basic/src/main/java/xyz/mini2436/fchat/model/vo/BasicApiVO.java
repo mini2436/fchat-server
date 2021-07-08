@@ -1,5 +1,6 @@
 package xyz.mini2436.fchat.model.vo;
 
+import xyz.mini2436.fchat.enums.BusinessEnum;
 import xyz.mini2436.fchat.enums.ResultEnum;
 
 import java.io.Serializable;
@@ -36,5 +37,9 @@ public class BasicApiVO implements Serializable {
     }
     public <T> ResultVO<T> fail(Integer code , String msg , T data){
         return ResultVO.<T>builder().code(code).msg(msg).data(data).build();
+    }
+
+    public ResultVO<String> error(BusinessEnum businessEnum,Exception exception){
+        return ResultVO.<String>builder().code(businessEnum.getCode()).msg(exception.getMessage()).data(businessEnum.getContent()).build();
     }
 }
