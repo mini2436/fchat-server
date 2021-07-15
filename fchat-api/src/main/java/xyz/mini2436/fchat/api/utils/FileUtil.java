@@ -65,4 +65,18 @@ public class FileUtil {
                 .bodyToMono(SeaweedFsUpload.class)
                 .map(seaweedFsUpload -> SeaweedFsVo.builder().fid(fid.getFid()).url("http://"+fid.getPublicUrl()+"/"+fid.getFid()).build()));
     }
+
+    /**
+     * 根据fid删除文件服务器文件
+     * @param fid 文件的fid标识
+     * @return 返回删除状态
+     */
+    public Mono<Boolean> delFileByFid(String fid){
+        return webClient
+                .delete()
+                .uri("http://"+seaweedFsHost+":"+seaweedFsPort+"/"+fid)
+                .retrieve()
+                .bodyToMono(SeaweedFsUpload.class)
+                .map(v -> Boolean.TRUE);
+    }
 }

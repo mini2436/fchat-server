@@ -28,6 +28,12 @@ public class SystemApi extends ApiVo {
     @Value("${fchat.seaweedFs.windowsTempFilePath}")
     private String windowsTempFilePath;
 
+    @Value("${fchat.seaweedFs.host}")
+    private String seaweedFsHost;
+
+    @Value("${fchat.seaweedFs.port}")
+    private Integer seaweedFsPort;
+
     /**
      * 上传文件
      *
@@ -48,8 +54,16 @@ public class SystemApi extends ApiVo {
      * @return 返回文件服务器查询到的文件数据
      */
     @GetMapping("fileByFid/{fid}")
-    Mono<SeaweedFsVo> getFileByFid(@PathVariable("fid") Mono<String> fid) {
-        return null;
+    Mono<ResultVO<SeaweedFsVo>> getFileByFid(@PathVariable("fid") Mono<String> fid) {
+        return fid.flatMap(fidStr -> this.success(SeaweedFsVo.builder().fid(fidStr).url("http://"+seaweedFsHost+":"+seaweedFsPort+"/"+fidStr).build()));
     }
 
+    /**
+     * 根据文件的Fid删除文件在文件服务器上面的存储
+     * @return 返回删除成功的信息
+     */
+    @DeleteMapping("fileByid/{fid}")
+    Mono<ResultVO<Boolean>> delFileByFid(@PathVariable("fid") Mono<String> fid){
+        return fid.flatMap(fidStr -> fileUtil.delFileByFid(fidStr)).flatMap(this::success);
+    }
 }
