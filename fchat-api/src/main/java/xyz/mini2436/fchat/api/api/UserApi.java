@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import xyz.mini2436.fchat.api.model.dto.LoginDto;
 import xyz.mini2436.fchat.api.model.po.mysql.FchatUser;
 import xyz.mini2436.fchat.api.model.vo.ApiVo;
+import xyz.mini2436.fchat.api.model.vo.LoginVo;
 import xyz.mini2436.fchat.api.service.UserService;
 import xyz.mini2436.fchat.api.utils.PasswordUtil;
 import xyz.mini2436.fchat.model.vo.ResultVO;
@@ -34,7 +36,7 @@ public class UserApi extends ApiVo {
      * @param user 用户的注册信息封装
      * @return 返回注册成功的用户
      */
-    @PostMapping
+    @PostMapping("register")
     Mono<ResultVO<FchatUser>> adduser(@Validated @RequestBody Mono<FchatUser> user) {
         // 转换请求参数
         return user.map(requestUser -> {
@@ -50,5 +52,15 @@ public class UserApi extends ApiVo {
                 .flatMap(userService::addUser)
                 // 返回前端数据
                 .flatMap(this::success);
+    }
+
+    /**
+     * 系统账户登录
+     * @param dto 登录的参数封装
+     * @return 返回登录成功的用户信息与凭证
+     */
+    @PostMapping
+    Mono<ResultVO<LoginVo>> login(@Validated @RequestBody Mono<LoginDto> dto){
+        return userService.login(dto).flatMap(this::success);
     }
 }
