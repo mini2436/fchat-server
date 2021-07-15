@@ -24,8 +24,8 @@ fchat:
   seaweedFs:
     host: 104.224.187.107
     port: 9333
-    windowsTempFilePath: temp/
-    linuxTempFilePath: temp/
+    windowsTempFilePath: C:\\Users\\58499\\projects\\idea-project\\fchat-server\\temp\\
+    linuxTempFilePath: /temp/
   system:
     tokenName: f-token
     encryptionKey: BQEW4'ZGy|4@Xl85k1,MxcWkvJu?)wNu
