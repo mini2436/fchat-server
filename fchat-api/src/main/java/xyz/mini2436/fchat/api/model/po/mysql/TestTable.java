@@ -1,4 +1,4 @@
-package xyz.mini2436.fchat.api.model.po;
+package xyz.mini2436.fchat.api.model.po.mysql;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

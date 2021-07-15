@@ -11,8 +11,8 @@ spring:
     url: r2dbcs:mysql://116.62.17.98:4306/fchat
   data:
     mongodb:
-      username: root
-      password: 123456
+      username: fchat
+      password: "123456"
       host: 116.62.17.98
       database: fchat
       port: 27017
@@ -21,8 +21,12 @@ spring:
     host: 116.62.17.98
     password: 123456
 fchat:
-  seaweedFS:
-    host: 116.62.17.98
-    port: 40011
+  seaweedFs:
+    host: 104.224.187.107
+    port: 9333
+    windowsTempFilePath: temp/
+    linuxTempFilePath: temp/
   system:
     tokenName: f-token
+    encryptionKey: BQEW4'ZGy|4@Xl85k1,MxcWkvJu?)wNu
+    tokenKey: D'Sq5Rs7^aLuM'G$Tou_.Xu%d/s3Dw%l

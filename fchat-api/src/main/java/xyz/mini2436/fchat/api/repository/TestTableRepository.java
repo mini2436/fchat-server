@@ -5,7 +5,7 @@ import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.reactive.ReactiveSortingRepository;
 import reactor.core.publisher.Mono;
-import xyz.mini2436.fchat.api.model.po.TestTable;
+import xyz.mini2436.fchat.api.model.po.mysql.TestTable;
 
 /**
  * 测试jpa

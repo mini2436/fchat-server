@@ -16,7 +16,7 @@ import java.util.List;
  * @author mini2436
  * @date 2021-07-07 10:49
  **/
-public class JsonUtils {
+public class JsonUtil {
     /**
      * json转换成对象
      * @param jsonStr json字符串

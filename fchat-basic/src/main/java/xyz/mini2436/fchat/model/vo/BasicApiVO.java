@@ -42,4 +42,7 @@ public class BasicApiVO implements Serializable {
     public ResultVO<String> error(BusinessEnum businessEnum,Exception exception){
         return ResultVO.<String>builder().code(businessEnum.getCode()).msg(exception.getMessage()).data(businessEnum.getContent()).build();
     }
+    public <T>ResultVO<T> error(BusinessEnum businessEnum,Exception exception , T data){
+        return ResultVO.<T>builder().code(businessEnum.getCode()).msg(businessEnum.getContent()).data(data).build();
+    }
 }

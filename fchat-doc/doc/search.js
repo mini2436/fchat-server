@@ -1,26 +1,60 @@
 let api = [];
 api.push({
-    alias: 'TestApi',
+    alias: 'SystemApi',
     order: '1',
-    link: '测试api',
-    desc: '测试API',
+    link: '系统api',
+    desc: '系统API',
     list: []
 })
 api[0].list.push({
     order: '1',
-    desc: 'Redis测试接口',
+    desc: '上传文件',
 });
 api[0].list.push({
+    order: '2',
+    desc: '根据文件的Fid获取文件的访问连接',
+});
+api.push({
+    alias: 'TestApi',
+    order: '2',
+    link: '测试api',
+    desc: '测试API',
+    list: []
+})
+api[1].list.push({
+    order: '1',
+    desc: 'Redis测试接口',
+});
+api[1].list.push({
     order: '2',
     desc: 'Mysql异步测试接口',
 });
-api[0].list.push({
+api[1].list.push({
     order: '3',
     desc: '根据id查询数据库中的测试数据',
 });
+api[1].list.push({
+    order: '4',
+    desc: '获取系统中所有的测试数据',
+});
+api[1].list.push({
+    order: '5',
+    desc: '添加mongoDB文档数据',
+});
+api.push({
+    alias: 'UserApi',
+    order: '3',
+    link: '用户api提供用户数据的相关操作',
+    desc: '用户API提供用户数据的相关操作',
+    list: []
+})
+api[2].list.push({
+    order: '1',
+    desc: '注册用户接口',
+});
 api.push({
     alias: 'dict',
-    order: '2',
+    order: '4',
     link: 'dict_list',
     desc: '数据字典',
     list: []
