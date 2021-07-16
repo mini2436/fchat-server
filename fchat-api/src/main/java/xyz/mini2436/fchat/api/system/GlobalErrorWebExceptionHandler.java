@@ -1,18 +1,19 @@
 package xyz.mini2436.fchat.api.system;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
-import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
-import org.springframework.boot.web.reactive.error.ErrorAttributes;
-import org.springframework.context.ApplicationContext;
+import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
+import org.springframework.core.annotation.Order;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.server.*;
+import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import reactor.netty.ByteBufMono;
+import xyz.mini2436.fchat.api.utils.JsonUtil;
 import xyz.mini2436.fchat.enums.ResultEnum;
-
-import java.util.Map;
+import xyz.mini2436.fchat.model.vo.ResultVO;
 
 /**
  * 全局异常拦截
@@ -21,22 +22,18 @@ import java.util.Map;
  * @date 2021-07-16 17:31
  **/
 @Slf4j
-public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHandler {
-    public GlobalErrorWebExceptionHandler(ErrorAttributes errorAttributes, ResourceProperties resourceProperties, ApplicationContext applicationContext) {
-        super(errorAttributes, resourceProperties, applicationContext);
-    }
-
+@Component
+@Order(-2)
+public class GlobalErrorWebExceptionHandler  implements ErrorWebExceptionHandler {
     @Override
-    protected RouterFunction<ServerResponse> getRoutingFunction(ErrorAttributes errorAttributes) {
-        return RouterFunctions.route(RequestPredicates.all(), request -> this.renderErrorResponse(request, errorAttributes.getError(request)));
-    }
-
-    private Mono<ServerResponse> renderErrorResponse(ServerRequest request, Throwable e) {
-        //输出异常堆栈信息
-        e.printStackTrace();
-        log.error("全局异常拦截:{}", e.getMessage());
-        return ServerResponse.status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(Map.of("code", ResultEnum.ERROR.getCode(),"msg",e.getMessage(),"data",e.getMessage())));
+    public Mono<Void> handle(ServerWebExchange exchange, Throwable throwable) {
+        ServerHttpResponse response = exchange.getResponse();
+        response.setStatusCode(HttpStatus.OK);
+        ResultVO<String> resultVO = ResultVO.<String>builder().code(ResultEnum.ERROR.getCode()).msg(throwable.getMessage()).data(throwable.getMessage()).build();
+        DataBuffer buff = response.bufferFactory()
+                .allocateBuffer().write(JsonUtil.objToJson(resultVO).getBytes());
+        //基于流形式
+        response.getHeaders().setContentType(MediaType.APPLICATION_NDJSON);
+        return response.writeAndFlushWith(Mono.just(ByteBufMono.just(buff)));
     }
 }

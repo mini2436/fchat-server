@@ -8,7 +8,9 @@
         <version>0.0.1-dev</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <properties>
+        <java.version>16</java.version>
+    </properties>
     <artifactId>fchat-basic</artifactId>
     <version>0.0.1-dev</version>
     <name>fchat-basic</name>

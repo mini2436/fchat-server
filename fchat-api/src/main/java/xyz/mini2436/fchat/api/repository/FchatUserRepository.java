@@ -50,4 +50,12 @@ public interface FchatUserRepository extends ReactiveSortingRepository<FchatUser
      * @return 返回查询的用户数量
      */
     Flux<FchatUser> findByEmailAndDelStatus(String email,Integer delStatus);
+
+    /**
+     * 根据Id查找用户信息
+     * @param userId 用户ID
+     * @param delStatus 账号状态
+     * @return 返回查询的数据
+     */
+    Mono<FchatUser> findByIdAndDelStatus(Long userId , Integer delStatus);
 }

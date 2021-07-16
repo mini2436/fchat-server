@@ -23,7 +23,7 @@ spring:
     database: 3
 fchat:
   noneCertificationUrl:
-#    - POST:/user
+    - POST:/user
     - POST:/user/register
   seaweedFs:
     host: 104.224.187.107
