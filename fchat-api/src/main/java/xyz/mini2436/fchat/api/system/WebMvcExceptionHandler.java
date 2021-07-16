@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @Slf4j
-public class CustomExceptionHandler extends BasicApiVO {
+public class WebMvcExceptionHandler extends BasicApiVO {
 
     @ExceptionHandler(Exception.class)
     public ResultVO handleCustomException(Exception e) {

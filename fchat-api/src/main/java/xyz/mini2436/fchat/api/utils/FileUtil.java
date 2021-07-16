@@ -2,7 +2,6 @@ package xyz.mini2436.fchat.api.utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -13,6 +12,7 @@ import reactor.core.publisher.Mono;
 import xyz.mini2436.fchat.api.model.bo.SeaweedFs;
 import xyz.mini2436.fchat.api.model.bo.SeaweedFsUpload;
 import xyz.mini2436.fchat.api.model.vo.SeaweedFsVo;
+import xyz.mini2436.fchat.api.system.FchatYmlConfig;
 
 /**
  * 文件处理工具类
@@ -24,17 +24,7 @@ import xyz.mini2436.fchat.api.model.vo.SeaweedFsVo;
 @RequiredArgsConstructor
 @Slf4j
 public class FileUtil {
-    @Value("${fchat.seaweedFs.host}")
-    private String seaweedFsHost;
-
-    @Value("${fchat.seaweedFs.port}")
-    private Integer seaweedFsPort;
-
-    @Value("${fchat.seaweedFs.windowsTempFilePath}")
-    private String windowsTempFilePath;
-
-    @Value("${fchat.seaweedFs.linuxTempFilePath}")
-    private String linuxTempFilePath;
+    private final FchatYmlConfig fchatYmlConfig;
 
     private WebClient webClient = WebClient.create();
 
@@ -45,7 +35,7 @@ public class FileUtil {
      */
     public Mono<SeaweedFs> getFid() {
         return webClient.get()
-                .uri("http://" + seaweedFsHost + ":" +seaweedFsPort + "/dir/assign")
+                .uri("http://" + fchatYmlConfig.getSeaweedFs().getHost() + ":" +fchatYmlConfig.getSeaweedFs().getPort() + "/dir/assign")
                 .retrieve()
                 .bodyToMono(SeaweedFs.class);
     }
@@ -74,7 +64,7 @@ public class FileUtil {
     public Mono<Boolean> delFileByFid(String fid){
         return webClient
                 .delete()
-                .uri("http://"+seaweedFsHost+":"+seaweedFsPort+"/"+fid)
+                .uri("http://"+fchatYmlConfig.getSeaweedFs().getHost()+":"+fchatYmlConfig.getSeaweedFs().getPort()+"/"+fid)
                 .retrieve()
                 .bodyToMono(SeaweedFsUpload.class)
                 .map(v -> Boolean.TRUE);

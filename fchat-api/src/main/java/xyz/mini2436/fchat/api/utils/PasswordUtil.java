@@ -1,8 +1,9 @@
 package xyz.mini2436.fchat.api.utils;
 
 import cn.hutool.crypto.SecureUtil;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import xyz.mini2436.fchat.api.system.FchatYmlConfig;
 
 /**
  * 密码工具类
@@ -11,13 +12,10 @@ import org.springframework.stereotype.Component;
  * @date 2021-07-09 10:20
  **/
 @Component
+@RequiredArgsConstructor
 public class PasswordUtil {
+    private final FchatYmlConfig fchatYmlConfig;
 
-    /**
-     * 注入配置文件中的加密密钥
-     */
-    @Value("${fchat.system.encryptionKey}")
-    private String encryptionKey;
 
     /**
      * 通过摘要算法获取新密码
@@ -33,6 +31,7 @@ public class PasswordUtil {
      * @return 返回加密的KEY
      */
     public String generateKey() {
-        return SecureUtil.hmacSha1(encryptionKey).digestHex(encryptionKey);
+        return SecureUtil.hmacSha1(fchatYmlConfig.getSystem()
+                .getEncryptionKey()).digestHex(fchatYmlConfig.getSystem().getEncryptionKey());
     }
 }

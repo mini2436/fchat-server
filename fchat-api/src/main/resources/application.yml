@@ -20,7 +20,11 @@ spring:
     port: 7379
     host: 116.62.17.98
     password: 123456
+    database: 3
 fchat:
+  noneCertificationUrl:
+#    - POST:/user
+    - POST:/user/register
   seaweedFs:
     host: 104.224.187.107
     port: 9333
@@ -30,3 +34,4 @@ fchat:
     tokenName: f-token
     encryptionKey: BQEW4'ZGy|4@Xl85k1,MxcWkvJu?)wNu
     tokenKey: D'Sq5Rs7^aLuM'G$Tou_.Xu%d/s3Dw%l
+    tokenExpiredTime: 86400000

@@ -2,12 +2,12 @@ package xyz.mini2436.fchat.api.api;
 
 import cn.hutool.core.util.IdUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import xyz.mini2436.fchat.api.model.vo.ApiVo;
 import xyz.mini2436.fchat.api.model.vo.SeaweedFsVo;
+import xyz.mini2436.fchat.api.system.FchatYmlConfig;
 import xyz.mini2436.fchat.api.utils.FileUtil;
 import xyz.mini2436.fchat.model.vo.ResultVO;
 
@@ -24,15 +24,7 @@ import java.nio.file.Paths;
 @RequiredArgsConstructor
 public class SystemApi extends ApiVo {
     private final FileUtil fileUtil;
-
-    @Value("${fchat.seaweedFs.windowsTempFilePath}")
-    private String windowsTempFilePath;
-
-    @Value("${fchat.seaweedFs.host}")
-    private String seaweedFsHost;
-
-    @Value("${fchat.seaweedFs.port}")
-    private Integer seaweedFsPort;
+    private final FchatYmlConfig fchatYmlConfig;
 
     /**
      * 上传文件
@@ -42,9 +34,16 @@ public class SystemApi extends ApiVo {
     @PostMapping("uploadFile")
     Mono<ResultVO<SeaweedFsVo>> uploadFile(@RequestPart("file") Mono<FilePart> filePart) {
         String nameId = IdUtil.simpleUUID();
-        filePart.flatMap(it -> it.transferTo(Paths.get(windowsTempFilePath + nameId + "-" + it.filename()))).subscribe();
-        return filePart.flatMap(v -> fileUtil.uploadFile(windowsTempFilePath + nameId + "-" + v.filename()))
-                .flatMap(this::success);
+        // 判定系统版本进行文件上传
+        if (System.getProperty("os.name").toUpperCase().startsWith("WIN")){
+            filePart.flatMap(it -> it.transferTo(Paths.get(fchatYmlConfig.getSeaweedFs().getWindowsTempFilePath() + nameId + "-" + it.filename()))).subscribe();
+            return filePart.flatMap(v -> fileUtil.uploadFile(fchatYmlConfig.getSeaweedFs().getWindowsTempFilePath() + nameId + "-" + v.filename()))
+                    .flatMap(this::success);
+        }else {
+            filePart.flatMap(it -> it.transferTo(Paths.get(fchatYmlConfig.getSeaweedFs().getLinuxTempFilePath() + nameId + "-" + it.filename()))).subscribe();
+            return filePart.flatMap(v -> fileUtil.uploadFile(fchatYmlConfig.getSeaweedFs().getLinuxTempFilePath() + nameId + "-" + v.filename()))
+                    .flatMap(this::success);
+        }
     }
 
     /**
@@ -55,7 +54,8 @@ public class SystemApi extends ApiVo {
      */
     @GetMapping("fileByFid/{fid}")
     Mono<ResultVO<SeaweedFsVo>> getFileByFid(@PathVariable("fid") Mono<String> fid) {
-        return fid.flatMap(fidStr -> this.success(SeaweedFsVo.builder().fid(fidStr).url("http://"+seaweedFsHost+":"+seaweedFsPort+"/"+fidStr).build()));
+        return fid.flatMap(fidStr -> this.success(SeaweedFsVo.builder().fid(fidStr)
+                .url("http://"+fchatYmlConfig.getSeaweedFs().getHost()+":"+fchatYmlConfig.getSeaweedFs().getPort()+"/"+fidStr).build()));
     }
 
     /**

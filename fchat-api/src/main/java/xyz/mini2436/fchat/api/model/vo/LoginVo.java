@@ -45,10 +45,6 @@ public class LoginVo implements Serializable {
      */
     private String email;
     /**
-     * 密码
-     */
-    private String password;
-    /**
      * 头像
      */
     private String avatar;

@@ -1,19 +1,21 @@
 package xyz.mini2436.fchat.api.system;
 
-import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.jwt.JWT;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
-import org.springframework.web.util.pattern.PathPattern;
-import org.springframework.web.util.pattern.PathPatternParser;
 import reactor.core.publisher.Mono;
+import xyz.mini2436.fchat.enums.SystemEnum;
+import xyz.mini2436.fchat.exceptions.ParameterException;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 校验用户是否登录的过滤器
@@ -23,25 +25,43 @@ import java.util.stream.Collectors;
  **/
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class LoginFilter implements WebFilter {
+    private final ReactiveStringRedisTemplate reactiveStringRedisTemplate;
+    private final FchatYmlConfig fchatYmlConfig;
 
-    @Value("${fchat.system.tokenName}")
-    private String tokenName;
-
+    /**
+     * 认证拦截
+     * @param serverWebExchange
+     * @param webFilterChain
+     * @return
+     */
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
-        PathPattern pattern=new PathPatternParser().parse("/system/login");
         ServerHttpRequest request = serverWebExchange.getRequest();
-        String userId = "";
-        if (!pattern.matches(request.getPath().pathWithinApplication())) {
-            List<String> tokens = request.getHeaders().get(tokenName);
-            if (ArrayUtil.isEmpty(tokens)) {
-                log.error("当前请求没有携带登录认证密钥");
-            }else {
-                userId = tokens.stream().limit(1).collect(Collectors.toList()).get(0);
+        log.info("当前的请求方式是:{}",request.getMethod().name());
+        log.info("当前的请求path是:{}",request.getPath().pathWithinApplication());
+        // 请求方式与请求路由的分割符号
+        String separator = ":";
+        if (fchatYmlConfig.getNoneCertificationUrl().contains(request.getMethod().name() + separator + request.getPath().pathWithinApplication())){
+            log.info("当前请求无需进行用户认证的相关操作");
+            return webFilterChain.filter(serverWebExchange);
+        }else {
+            List<String> tokens = request.getHeaders().get(fchatYmlConfig.getSystem().getTokenName());
+            if (tokens == null){
+                throw new ParameterException("当前请求未携带Token参数");
             }
+            String token = new ArrayList<>(tokens).get(0);
+            reactiveStringRedisTemplate.opsForValue()
+                    .get(SystemEnum.REDIS_TOKEN_PATH.getContent()+"TOKEN:"+token)
+                    .defaultIfEmpty("")
+                    .subscribe(cacheUserInfo -> {
+                        if (StrUtil.hasBlank(cacheUserInfo)){
+                            throw new ParameterException("当前登录Token已失效");
+                        }
+                    });
+            Object userId = JWT.of(token).getPayload("userId");
+            return webFilterChain.filter(serverWebExchange).contextWrite(ctx -> ctx.put("userId", userId));
         }
-        String finalUserId = userId;
-        return webFilterChain.filter(serverWebExchange).contextWrite(ctx -> ctx.put("userId", finalUserId));
     }
 }
