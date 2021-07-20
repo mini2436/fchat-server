@@ -62,6 +62,7 @@ public class SystemApi extends ApiVo {
 
     /**
      * 根据文件的Fid删除文件在文件服务器上面的存储
+     * @param fid 需要删除的文件唯一标识
      * @return 返回删除成功的信息
      */
     @DeleteMapping("fileByFid/{fid}")

@@ -6,13 +6,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import xyz.mini2436.fchat.api.mapper.UserMapper;
-import xyz.mini2436.fchat.model.dto.LoginDto;
 import xyz.mini2436.fchat.api.model.po.mysql.FchatUser;
 import xyz.mini2436.fchat.api.model.vo.ApiVo;
-import xyz.mini2436.fchat.model.vo.LoginVo;
 import xyz.mini2436.fchat.api.service.UserService;
 import xyz.mini2436.fchat.api.utils.PasswordUtil;
 import xyz.mini2436.fchat.enums.SystemEnum;
+import xyz.mini2436.fchat.model.dto.LoginDto;
+import xyz.mini2436.fchat.model.dto.UpdateUserDto;
+import xyz.mini2436.fchat.model.vo.LoginVo;
 import xyz.mini2436.fchat.model.vo.ResultVo;
 
 /**
@@ -37,9 +38,9 @@ public class UserApi extends ApiVo {
      * @return 返回注册成功的用户
      */
     @PostMapping("register")
-    Mono<ResultVo<LoginVo>> adduser(@Validated @RequestBody Mono<FchatUser> user) {
+    Mono<ResultVo<LoginVo>> adduser(@Validated @RequestBody FchatUser user) {
         // 转换请求参数
-        return user.map(requestUser -> {
+        return Mono.just(user).map(requestUser -> {
                     requestUser.setPassword(passwordUtil.strEncryption(requestUser.getPassword()));
                     requestUser.setUserId(IdUtil.getSnowflake().nextId());
                     requestUser.setCreatedBy(-1L);
@@ -62,18 +63,21 @@ public class UserApi extends ApiVo {
      * @return 返回登录成功的用户信息与凭证
      */
     @PostMapping
-    Mono<ResultVo<LoginVo>> login(@Validated @RequestBody Mono<LoginDto> dto) {
-        return userService.login(dto).flatMap(this::success);
+    Mono<ResultVo<LoginVo>> login(@Validated @RequestBody LoginDto dto) {
+        return userService.login(Mono.just(dto)).flatMap(this::success);
     }
 
     /**
      * 更新自己的用户数据
-     *
-     * @return 返回
+     * @param dto 更新的用户数据dto封装
+     * @return 返回更新后的用户数据
      */
     @PutMapping
-    Mono<ResultVo<LoginVo>> updateInfo() {
-        return null;
+    Mono<ResultVo<LoginVo>> updateUserInfo(@Validated @RequestBody UpdateUserDto dto) {
+        return Mono.just(dto).flatMap(updateUserDto -> {
+            FchatUser user = userMapper.updateUserDtoToUser(updateUserDto);
+            return userService.updateUserInfo(user);
+        }).flatMap(this::success);
     }
 
     /**

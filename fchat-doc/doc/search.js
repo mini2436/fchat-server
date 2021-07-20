@@ -56,6 +56,18 @@ api[2].list.push({
     order: '1',
     desc: '注册用户接口',
 });
+api[2].list.push({
+    order: '2',
+    desc: '系统账户登录',
+});
+api[2].list.push({
+    order: '3',
+    desc: '更新自己的用户数据',
+});
+api[2].list.push({
+    order: '4',
+    desc: '根据当前用户的登录Token获取当前用户的信息',
+});
 api.push({
     alias: 'dict',
     order: '4',
