@@ -13,9 +13,12 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 import xyz.mini2436.fchat.api.model.po.mysql.FchatUser;
 import xyz.mini2436.fchat.api.repository.FchatUserRepository;
+import xyz.mini2436.fchat.api.utils.JsonUtil;
 import xyz.mini2436.fchat.enums.SystemEnum;
+import xyz.mini2436.fchat.exceptions.DatabaseException;
 import xyz.mini2436.fchat.exceptions.ParameterException;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -59,7 +62,7 @@ public class LoginFilter implements WebFilter {
                 throw new ParameterException("请不要随意使用Token值测试系统");
             }
             return Mono.just(userId).flatMap(id -> reactiveStringRedisTemplate.opsForValue()
-                    .get(SystemEnum.REDIS_TOKEN_PATH.getContent()+"TOKEN:"+token)
+                    .get(SystemEnum.REDIS_LOGIN_TOKEN_PATH.getContent()+token)
                     .defaultIfEmpty("")
                     .flatMap(cacheUserInfo -> {
                         // 根据key没有在redis找到当前用户的登录缓存信息,及判定当前用户登录失效
@@ -68,13 +71,29 @@ public class LoginFilter implements WebFilter {
                         }
                         // 认证通过则通过当前的认证,并放入当前的用户请求信息
                         return fchatUserRepository
-                                .findByIdAndDelStatus(id, 0)
+                                // 查询当前用户数据
+                                .findByUserIdAndDelStatus(id, 0)
                                 .defaultIfEmpty(FchatUser.builder().build())
+                                .map(queryUser ->{
+                                    if (Objects.isNull(queryUser.getUserId())){
+                                        throw new DatabaseException("当前用户已不存在与系统之中");
+                                    }
+                                    reactiveStringRedisTemplate.opsForValue()
+                                            .set(SystemEnum.REDIS_LOGIN_TOKEN_PATH.getContent()+token,
+                                                    JsonUtil.objToJson(queryUser),
+                                                    Duration.ofMillis(fchatYmlConfig.getSystem().getTokenExpiredTime())
+                                            )
+                                            .subscribe();
+                                    return queryUser;
+                                })
+                                // 上下文对象中对用户的关键性数据进行存储
                                 .flatMap(queryUser -> webFilterChain.filter(serverWebExchange)
                                         // 认证成功在上下文中放入用户的id
-                                        .contextWrite(ctx -> ctx.put("userId", id))
+                                        .contextWrite(ctx -> ctx.put(SystemEnum.WEBFLUX_CONTEXT_DATA_USER_ID.getContent(), id))
                                         // 认证成功在上下文中放入用户的信息
-                                        .contextWrite(ctx -> ctx.put("userInfo", queryUser)));
+                                        .contextWrite(ctx -> ctx.put(SystemEnum.WEBFLUX_CONTEXT_DATA_USER_INFO.getContent(), queryUser))
+                                        // 认证成功在上下文中放入当前用户的token
+                                        .contextWrite(ctx -> ctx.put(SystemEnum.WEBFLUX_CONTEXT_DATA_USER_TOKEN.getContent(), token)));
                     }));
 
         }

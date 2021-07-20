@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import xyz.mini2436.fchat.api.model.bo.SeaweedFs;
-import xyz.mini2436.fchat.api.model.bo.SeaweedFsUpload;
-import xyz.mini2436.fchat.api.model.vo.SeaweedFsVo;
+import xyz.mini2436.fchat.model.bo.SeaweedFs;
+import xyz.mini2436.fchat.model.bo.SeaweedFsUpload;
+import xyz.mini2436.fchat.model.vo.SeaweedFsVo;
 import xyz.mini2436.fchat.api.system.FchatYmlConfig;
 
 /**
@@ -35,7 +35,7 @@ public class FileUtil {
      */
     public Mono<SeaweedFs> getFid() {
         return webClient.get()
-                .uri("http://" + fchatYmlConfig.getSeaweedFs().getHost() + ":" +fchatYmlConfig.getSeaweedFs().getPort() + "/dir/assign")
+                .uri(fchatYmlConfig.getSeaweedFs().getUrl()+ "/dir/assign")
                 .retrieve()
                 .bodyToMono(SeaweedFs.class);
     }
@@ -53,7 +53,7 @@ public class FileUtil {
                 .body(BodyInserters.fromMultipartData(builder.build()))
                 .retrieve()
                 .bodyToMono(SeaweedFsUpload.class)
-                .map(seaweedFsUpload -> SeaweedFsVo.builder().fid(fid.getFid()).url("http://"+fid.getPublicUrl()+"/"+fid.getFid()).build()));
+                .map(seaweedFsUpload -> SeaweedFsVo.builder().fid(fid.getFid()).url(fchatYmlConfig.getSeaweedFs().getUrl()+"/"+fid.getFid()).build()));
     }
 
     /**
@@ -64,9 +64,10 @@ public class FileUtil {
     public Mono<Boolean> delFileByFid(String fid){
         return webClient
                 .delete()
-                .uri("http://"+fchatYmlConfig.getSeaweedFs().getHost()+":"+fchatYmlConfig.getSeaweedFs().getPort()+"/"+fid)
+                .uri(fchatYmlConfig.getSeaweedFs().getUrl()+"/"+fid)
                 .retrieve()
                 .bodyToMono(SeaweedFsUpload.class)
+                .defaultIfEmpty(SeaweedFsUpload.builder().build())
                 .map(v -> Boolean.TRUE);
     }
 }

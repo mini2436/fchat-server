@@ -8,9 +8,10 @@ import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import xyz.mini2436.fchat.api.model.dto.LoginDto;
+import xyz.mini2436.fchat.api.mapper.UserMapper;
+import xyz.mini2436.fchat.model.dto.LoginDto;
 import xyz.mini2436.fchat.api.model.po.mysql.FchatUser;
-import xyz.mini2436.fchat.api.model.vo.LoginVo;
+import xyz.mini2436.fchat.model.vo.LoginVo;
 import xyz.mini2436.fchat.api.repository.FchatUserRepository;
 import xyz.mini2436.fchat.api.system.FchatYmlConfig;
 import xyz.mini2436.fchat.api.utils.JsonUtil;
@@ -37,6 +38,7 @@ public class UserService {
     private final PasswordUtil passwordUtil;
     private final ReactiveStringRedisTemplate reactiveStringRedisTemplate;
     private final FchatYmlConfig fchatYmlConfig;
+    private final UserMapper usermapper;
 
 
     /**
@@ -45,7 +47,7 @@ public class UserService {
      * @param user 注册的用户数据
      * @return 返回注册成功的用户数据
      */
-    public Mono<FchatUser> addUser(FchatUser user) {
+    public Mono<LoginVo> addUser(FchatUser user) {
         return fchatUserRepository
                 // 校验当前手机号是否已经注册
                 .findByMobilePhoneAndDelStatus(user.getMobilePhone(),0)
@@ -56,7 +58,7 @@ public class UserService {
                 .flatMap(queryStatus ->queryStatus ? Mono.just(fchatUserRepository) : Mono.error(new DatabaseException("当前邮箱已被注册")))
                 // 保存当前注册数据
                 .flatMap(repository -> repository.addOneUser(user))
-                .flatMap(insertCount -> insertCount  ? Mono.just(user) : Mono.error(new DatabaseException("当前用户注册失败")));
+                .flatMap(insertCount -> insertCount  ? Mono.just(usermapper.fchatUserToLoginVo(user)) : Mono.error(new DatabaseException("当前用户注册失败")));
     }
 
     /**
@@ -65,9 +67,6 @@ public class UserService {
      * @return 返回登录后的信息
      */
     public Mono<LoginVo> login(Mono<LoginDto> dto) {
-
-
-
         return dto.flatMap(loginDto -> {
             // 校验当前的登录用户是否处在
             Flux<FchatUser> queryUser;
@@ -101,30 +100,31 @@ public class UserService {
                                     .setPayload("createTime",System.currentTimeMillis())
                                     .setKey(fchatYmlConfig.getSystem().getTokenKey().getBytes(StandardCharsets.UTF_8))
                                     .sign();
-                            // 构造返回对象
+                            // 构造方法返回对象
                             LoginVo responseVo = LoginVo.builder().avatar(userInfo.getAvatar()).email(userInfo.getEmail()).birthday(userInfo.getBirthday())
                                     .mobilePhone(userInfo.getMobilePhone()).nickName(userInfo.getNickName()).username(userInfo.getUsername())
                                     .userId(userInfo.getUserId()).token(sign).build();
                             // 处理保存的参数
                             Map<String, String> redisloginSaveMap;
+                            // 根据用户的登录设备缓存当前的token
                             redisloginSaveMap = switch (loginDto.getEquipment()){
-                                case "WEB" ->  Map.of("WEB",sign);
-                                case "DESKTOP" -> Map.of("DESKTOP",sign);
-                                case "MOBILE" -> Map.of("MOBILE",sign);
+                                case "WEB" ->  Map.of(SystemEnum.WEB_LOGIN_EQUIPMENT.getContent(), sign);
+                                case "DESKTOP" -> Map.of(SystemEnum.DESKTOP_LOGIN_EQUIPMENT.getContent(), sign);
+                                case "MOBILE" -> Map.of(SystemEnum.MOBILE_LOGIN_EQUIPMENT.getContent(),sign);
                                 default -> {throw new ParameterException("当前登录设备不在支持范围内,用户id:"+userInfo.getUserId()+",用户姓名:"+userInfo.getUsername()+",登录设备:"+loginDto.getEquipment());}
                                 };
                             // 剔除原本在本设备类型在线的设备
-                            Flux<Map.Entry<Object, Object>> entries = reactiveStringRedisTemplate.opsForHash().entries(SystemEnum.REDIS_TOKEN_PATH.getContent() + "MAP:" + userInfo.getUserId());
+                            Flux<Map.Entry<Object, Object>> entries = reactiveStringRedisTemplate.opsForHash().entries(SystemEnum.REDIS_LOGIN_USERINFO_PATH.getContent()+ userInfo.getUserId());
                             entries.subscribe(entry ->{
                                 if (loginDto.getEquipment().equals(entry.getKey().toString())){
-                                    log.info("原设备已被下线,原有设备类型:{},原有设备在线Token:{}",loginDto.getEquipment(),entry.getValue());
-                                    reactiveStringRedisTemplate.delete(SystemEnum.REDIS_TOKEN_PATH.getContent()+"TOKEN:"+entry.getValue().toString()).subscribe();
+                                    log.warn("原设备已被下线,原有设备类型:{},原有设备在线Token:{}",loginDto.getEquipment(),entry.getValue());
+                                    reactiveStringRedisTemplate.delete(SystemEnum.REDIS_LOGIN_TOKEN_PATH.getContent()+entry.getValue().toString()).subscribe();
                                 }
                             });
                             // 更新用户的token数据
-                            reactiveStringRedisTemplate.opsForHash().putAll(SystemEnum.REDIS_TOKEN_PATH.getContent()+"MAP:"+userInfo.getUserId(),redisloginSaveMap).subscribe();
+                            reactiveStringRedisTemplate.opsForHash().putAll(SystemEnum.REDIS_LOGIN_USERINFO_PATH.getContent()+userInfo.getUserId(),redisloginSaveMap).subscribe();
                             // 设置新token的时效
-                            reactiveStringRedisTemplate.opsForValue().set(SystemEnum.REDIS_TOKEN_PATH.getContent()+"TOKEN:"+sign, JsonUtil.objToJson(responseVo),duration).subscribe();
+                            reactiveStringRedisTemplate.opsForValue().set(SystemEnum.REDIS_LOGIN_TOKEN_PATH.getContent()+sign, JsonUtil.objToJson(dataUser),duration).subscribe();
                             return responseVo;
                         });
                     }{

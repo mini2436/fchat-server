@@ -10,8 +10,8 @@ import xyz.mini2436.fchat.exceptions.DatabaseException;
 import xyz.mini2436.fchat.exceptions.MessageException;
 import xyz.mini2436.fchat.exceptions.ParameterException;
 import xyz.mini2436.fchat.exceptions.ServiceException;
-import xyz.mini2436.fchat.model.vo.BasicApiVO;
-import xyz.mini2436.fchat.model.vo.ResultVO;
+import xyz.mini2436.fchat.model.vo.BasicApiVo;
+import xyz.mini2436.fchat.model.vo.ResultVo;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,10 +25,10 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @Slf4j
-public class WebMvcExceptionHandler extends BasicApiVO {
+public class WebMvcExceptionHandler extends BasicApiVo {
 
     @ExceptionHandler(Exception.class)
-    public ResultVO handleCustomException(Exception e) {
+    public ResultVo handleCustomException(Exception e) {
         log.error(e.getMessage());
         e.printStackTrace();
         if (e instanceof RuntimeException) {

@@ -13,7 +13,7 @@ import xyz.mini2436.fchat.api.repository.TestDocumentRepository;
 import xyz.mini2436.fchat.api.repository.TestTableRepository;
 import xyz.mini2436.fchat.api.utils.JsonUtil;
 import xyz.mini2436.fchat.exceptions.ServiceException;
-import xyz.mini2436.fchat.model.vo.ResultVO;
+import xyz.mini2436.fchat.model.vo.ResultVo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +40,7 @@ public class TestApi extends ApiVo {
      * @return Redis中的Key数据
      */
     @GetMapping("getCache")
-    Mono<ResultVO<Map<String, Object>>> getCache() {
+    Mono<ResultVo<Map<String, Object>>> getCache() {
         return reactiveStringRedisTemplate
                 .opsForValue()
                 .get("ZRA170000")
@@ -62,7 +62,7 @@ public class TestApi extends ApiVo {
      * @return 返回是否新增成功的状态
      */
     @PostMapping
-    Mono<ResultVO<Boolean>> addData() {
+    Mono<ResultVo<Boolean>> addData() {
         return testTableRepository
                 .addOneData(TestTable.builder().id(123).age(24).name("abc").phone("15625702083").build())
                 .flatMap(this::success);
@@ -75,7 +75,7 @@ public class TestApi extends ApiVo {
      * @return 返回查询的数据库数据
      */
     @GetMapping("/{id}")
-    Mono<ResultVO<TestTable>> getOneTableData(@PathVariable Integer id) {
+    Mono<ResultVo<TestTable>> getOneTableData(@PathVariable Integer id) {
         return testTableRepository.findById(id).flatMap(this::success);
     }
 
@@ -84,7 +84,7 @@ public class TestApi extends ApiVo {
      * @return 返回所有的测试数据
      */
     @GetMapping
-    Mono<ResultVO<List<TestTable>>> getAll(){
+    Mono<ResultVo<List<TestTable>>> getAll(){
         return testTableRepository.findAll().collectList().flatMap(this::success);
     }
 
@@ -93,7 +93,7 @@ public class TestApi extends ApiVo {
      * @return 返回添加的测试数据
      */
     @PostMapping("addDocument")
-    Mono<ResultVO<TestDocument>> addDocument(){
+    Mono<ResultVo<TestDocument>> addDocument(){
         return testDocumentRepository
                 .insert(TestDocument.builder().id(123).name("abc").phone("15625702083").age(24).build())
                 .flatMap(this::success);

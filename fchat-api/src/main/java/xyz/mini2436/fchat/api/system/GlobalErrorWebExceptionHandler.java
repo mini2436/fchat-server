@@ -12,8 +12,8 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufMono;
 import xyz.mini2436.fchat.api.utils.JsonUtil;
-import xyz.mini2436.fchat.enums.ResultEnum;
-import xyz.mini2436.fchat.model.vo.ResultVO;
+import xyz.mini2436.fchat.enums.BusinessEnum;
+import xyz.mini2436.fchat.model.vo.ResultVo;
 
 /**
  * 全局异常拦截
@@ -29,7 +29,7 @@ public class GlobalErrorWebExceptionHandler  implements ErrorWebExceptionHandler
     public Mono<Void> handle(ServerWebExchange exchange, Throwable throwable) {
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(HttpStatus.OK);
-        ResultVO<String> resultVO = ResultVO.<String>builder().code(ResultEnum.ERROR.getCode()).msg(throwable.getMessage()).data(throwable.getMessage()).build();
+        ResultVo<String> resultVO = ResultVo.<String>builder().code(BusinessEnum.REQUEST_ERROR.getCode()).msg(BusinessEnum.REQUEST_ERROR.getContent()).data(throwable.getMessage()).build();
         DataBuffer buff = response.bufferFactory()
                 .allocateBuffer().write(JsonUtil.objToJson(resultVO).getBytes());
         //基于流形式

@@ -6,10 +6,10 @@ import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import xyz.mini2436.fchat.api.model.vo.ApiVo;
-import xyz.mini2436.fchat.api.model.vo.SeaweedFsVo;
+import xyz.mini2436.fchat.model.vo.SeaweedFsVo;
 import xyz.mini2436.fchat.api.system.FchatYmlConfig;
 import xyz.mini2436.fchat.api.utils.FileUtil;
-import xyz.mini2436.fchat.model.vo.ResultVO;
+import xyz.mini2436.fchat.model.vo.ResultVo;
 
 import java.nio.file.Paths;
 
@@ -32,10 +32,12 @@ public class SystemApi extends ApiVo {
      * @return 返回文件服务器的fid与文件的访问URL
      */
     @PostMapping("uploadFile")
-    Mono<ResultVO<SeaweedFsVo>> uploadFile(@RequestPart("file") Mono<FilePart> filePart) {
+    Mono<ResultVo<SeaweedFsVo>> uploadFile(@RequestPart("file") Mono<FilePart> filePart) {
         String nameId = IdUtil.simpleUUID();
         // 判定系统版本进行文件上传
-        if (System.getProperty("os.name").toUpperCase().startsWith("WIN")){
+        String oSType = "WIN";
+        String osName = "os.name";
+        if (System.getProperty(osName).toUpperCase().startsWith(oSType)){
             filePart.flatMap(it -> it.transferTo(Paths.get(fchatYmlConfig.getSeaweedFs().getWindowsTempFilePath() + nameId + "-" + it.filename()))).subscribe();
             return filePart.flatMap(v -> fileUtil.uploadFile(fchatYmlConfig.getSeaweedFs().getWindowsTempFilePath() + nameId + "-" + v.filename()))
                     .flatMap(this::success);
@@ -53,17 +55,17 @@ public class SystemApi extends ApiVo {
      * @return 返回文件服务器查询到的文件数据
      */
     @GetMapping("fileByFid/{fid}")
-    Mono<ResultVO<SeaweedFsVo>> getFileByFid(@PathVariable("fid") Mono<String> fid) {
-        return fid.flatMap(fidStr -> this.success(SeaweedFsVo.builder().fid(fidStr)
-                .url("http://"+fchatYmlConfig.getSeaweedFs().getHost()+":"+fchatYmlConfig.getSeaweedFs().getPort()+"/"+fidStr).build()));
+    Mono<ResultVo<SeaweedFsVo>> getFileByFid(@PathVariable("fid") String fid) {
+        return Mono.just(fid).flatMap(fidStr -> this.success(SeaweedFsVo.builder().fid(fidStr)
+                .url(fchatYmlConfig.getSeaweedFs().getUrl()+"/"+fidStr).build()));
     }
 
     /**
      * 根据文件的Fid删除文件在文件服务器上面的存储
      * @return 返回删除成功的信息
      */
-    @DeleteMapping("fileByid/{fid}")
-    Mono<ResultVO<Boolean>> delFileByFid(@PathVariable("fid") Mono<String> fid){
-        return fid.flatMap(fidStr -> fileUtil.delFileByFid(fidStr)).flatMap(this::success);
+    @DeleteMapping("fileByFid/{fid}")
+    Mono<ResultVo<Boolean>> delFileByFid(@PathVariable("fid")String fid){
+        return Mono.just(fid).flatMap(fileUtil::delFileByFid).flatMap(this::success);
     }
 }

@@ -1,10 +1,6 @@
 server:
   port: 40010
 spring:
-  devtools:
-    remote:
-      restart:
-        enabled: false
   r2dbc:
     username: root
     password: 123456
@@ -26,8 +22,7 @@ fchat:
     - POST:/user
     - POST:/user/register
   seaweedFs:
-    host: 104.224.187.107
-    port: 9333
+    url: https://fs.mini2436.xyz
     windowsTempFilePath: C:\\Users\\58499\\projects\\idea-project\\fchat-server\\temp\\
     linuxTempFilePath: /temp/
   system:

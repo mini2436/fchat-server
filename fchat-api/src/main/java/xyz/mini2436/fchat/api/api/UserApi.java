@@ -3,18 +3,17 @@ package xyz.mini2436.fchat.api.api;
 import cn.hutool.core.util.IdUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-import xyz.mini2436.fchat.api.model.dto.LoginDto;
+import xyz.mini2436.fchat.api.mapper.UserMapper;
+import xyz.mini2436.fchat.model.dto.LoginDto;
 import xyz.mini2436.fchat.api.model.po.mysql.FchatUser;
 import xyz.mini2436.fchat.api.model.vo.ApiVo;
-import xyz.mini2436.fchat.api.model.vo.LoginVo;
+import xyz.mini2436.fchat.model.vo.LoginVo;
 import xyz.mini2436.fchat.api.service.UserService;
 import xyz.mini2436.fchat.api.utils.PasswordUtil;
-import xyz.mini2436.fchat.model.vo.ResultVO;
+import xyz.mini2436.fchat.enums.SystemEnum;
+import xyz.mini2436.fchat.model.vo.ResultVo;
 
 /**
  * 用户API
@@ -29,6 +28,7 @@ import xyz.mini2436.fchat.model.vo.ResultVO;
 public class UserApi extends ApiVo {
     private final UserService userService;
     private final PasswordUtil passwordUtil;
+    private final UserMapper userMapper;
 
     /**
      * 注册用户接口
@@ -37,7 +37,7 @@ public class UserApi extends ApiVo {
      * @return 返回注册成功的用户
      */
     @PostMapping("register")
-    Mono<ResultVO<FchatUser>> adduser(@Validated @RequestBody Mono<FchatUser> user) {
+    Mono<ResultVo<LoginVo>> adduser(@Validated @RequestBody Mono<FchatUser> user) {
         // 转换请求参数
         return user.map(requestUser -> {
                     requestUser.setPassword(passwordUtil.strEncryption(requestUser.getPassword()));
@@ -47,7 +47,8 @@ public class UserApi extends ApiVo {
                     requestUser.setRevision(0);
                     requestUser.setDelStatus(0);
                     return requestUser;
-                })
+                }
+        )
                 // 业务层处理逻辑
                 .flatMap(userService::addUser)
                 // 返回前端数据
@@ -56,11 +57,35 @@ public class UserApi extends ApiVo {
 
     /**
      * 系统账户登录
+     *
      * @param dto 登录的参数封装
      * @return 返回登录成功的用户信息与凭证
      */
     @PostMapping
-    Mono<ResultVO<LoginVo>> login(@Validated @RequestBody Mono<LoginDto> dto){
+    Mono<ResultVo<LoginVo>> login(@Validated @RequestBody Mono<LoginDto> dto) {
         return userService.login(dto).flatMap(this::success);
+    }
+
+    /**
+     * 更新自己的用户数据
+     *
+     * @return 返回
+     */
+    @PutMapping
+    Mono<ResultVo<LoginVo>> updateInfo() {
+        return null;
+    }
+
+    /**
+     * 根据当前用户的登录Token获取当前用户的信息
+     *
+     * @return 从上下文中返回当前的用户数据
+     */
+    @GetMapping
+    Mono<ResultVo<LoginVo>> getUserInfo() {
+        return Mono.deferContextual(ctx -> this.success(userMapper.fchatUserToLoginVoAndToken(
+                ctx.get(SystemEnum.WEBFLUX_CONTEXT_DATA_USER_INFO.getContent()),
+                ctx.get(SystemEnum.WEBFLUX_CONTEXT_DATA_USER_TOKEN.getContent())
+        )));
     }
 }

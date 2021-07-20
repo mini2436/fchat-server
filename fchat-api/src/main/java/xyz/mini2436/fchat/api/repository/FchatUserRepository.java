@@ -57,5 +57,5 @@ public interface FchatUserRepository extends ReactiveSortingRepository<FchatUser
      * @param delStatus 账号状态
      * @return 返回查询的数据
      */
-    Mono<FchatUser> findByIdAndDelStatus(Long userId , Integer delStatus);
+    Mono<FchatUser> findByUserIdAndDelStatus(Long userId , Integer delStatus);
 }

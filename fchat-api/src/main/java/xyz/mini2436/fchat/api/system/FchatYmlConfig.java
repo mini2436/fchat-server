@@ -3,6 +3,8 @@ package xyz.mini2436.fchat.api.system;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import xyz.mini2436.fchat.model.bo.SeaweedFsYmlConfig;
+import xyz.mini2436.fchat.model.bo.SystemYmlConfig;
 
 import java.util.List;
 

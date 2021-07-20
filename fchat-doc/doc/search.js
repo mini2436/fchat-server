@@ -14,6 +14,10 @@ api[0].list.push({
     order: '2',
     desc: '根据文件的Fid获取文件的访问连接',
 });
+api[0].list.push({
+    order: '3',
+    desc: '根据文件的Fid删除文件在文件服务器上面的存储',
+});
 api.push({
     alias: 'TestApi',
     order: '2',
