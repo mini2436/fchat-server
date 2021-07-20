@@ -13,9 +13,25 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum SystemEnum {
     /**
-     * 请求成功定义
+     * webflux上下文关系数据存储userId
      */
-    REDIS_TOKEN_PATH("FCHAT:USER:TOKEN:"),
+    WEBFLUX_CONTEXT_DATA_USER_ID("userId"),
+    /**
+     * webflux上下文关系数据存储userInfo
+     */
+    WEBFLUX_CONTEXT_DATA_USER_INFO("userInfo"),
+    /**
+     * webflux上下文关系数据存储userInfo
+     */
+    WEBFLUX_CONTEXT_DATA_USER_TOKEN("userToken"),
+    /**
+     * 登录的用户redis数据存储
+     */
+    REDIS_LOGIN_USERINFO_PATH("FCHAT:USER:LOGIN:USERINFO"),
+    /**
+     * 登录的用户redis数据存储
+     */
+    REDIS_LOGIN_TOKEN_PATH("FCHAT:USER:LOGIN:TOKEN"),
     /**
      * Web登录设备
      */

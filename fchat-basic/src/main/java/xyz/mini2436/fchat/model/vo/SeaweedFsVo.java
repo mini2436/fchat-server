@@ -1,4 +1,4 @@
-package xyz.mini2436.fchat.api.model.vo;
+package xyz.mini2436.fchat.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

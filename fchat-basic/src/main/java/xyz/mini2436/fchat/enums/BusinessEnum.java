@@ -32,6 +32,14 @@ public enum  BusinessEnum {
      * 系统异常
      */
     SYSTEM_ERROR(5050,"系统异常"),
+    /**
+     * 登录失效
+     */
+    TOKEN_EXPIRED(5060,"Token失效"),
+    /**
+     * 当前请求发生错误
+     */
+    REQUEST_ERROR(5070,"当前请求发生错误"),
     ;
     /**
      * 请求状态定义

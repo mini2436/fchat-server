@@ -1,4 +1,4 @@
-package xyz.mini2436.fchat.api.system;
+package xyz.mini2436.fchat.model.bo;
 
 import lombok.Data;
 

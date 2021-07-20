@@ -1,4 +1,4 @@
-package xyz.mini2436.fchat.api.system;
+package xyz.mini2436.fchat.model.bo;
 
 import lombok.Data;
 
@@ -13,11 +13,7 @@ public class SeaweedFsYmlConfig {
     /**
      * 文件服务器的地址
      */
-    private String host;
-    /**
-     * 文件服务器的端口
-     */
-    private Integer port;
+    private String url;
     /**
      * Windows的临时文件存储路径
      */
