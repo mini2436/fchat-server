@@ -1,4 +1,4 @@
 FROM adoptopenjdk:16-jre-hotspot
 MAINTAINER mini2436
-ADD fchat-ws-0.0.1-dev.jar /fchat-ws-0.0.1-dev.jar
+ADD ./fchat-ws/target/fchat-ws-0.0.1-dev.jar /fchat-ws-0.0.1-dev.jar
 ENTRYPOINT ["java","-jar","/fchat-ws-0.0.1-dev.jar"]

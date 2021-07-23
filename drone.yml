@@ -28,7 +28,6 @@ steps:
       password: Wuxiunan1
       port: 22
       script:
-        - echo -------------- docker 构建api服务 --------------
         - cd /root/fchat-server/drone/src/fchat-api/target
         - docker stop fchat-api-dev
         - docker rm fchat-api-dev
