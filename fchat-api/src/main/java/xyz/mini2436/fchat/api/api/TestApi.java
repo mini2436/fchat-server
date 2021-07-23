@@ -8,7 +8,6 @@ import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import xyz.mini2436.fchat.api.model.po.mongo.TestDocument;
-import xyz.mini2436.fchat.api.model.po.mysql.FchatUser;
 import xyz.mini2436.fchat.api.model.po.mysql.TestTable;
 import xyz.mini2436.fchat.api.model.vo.ApiVo;
 import xyz.mini2436.fchat.api.repository.FchatUserRepository;
@@ -102,16 +101,5 @@ public class TestApi extends ApiVo {
         return testDocumentRepository
                 .insert(TestDocument.builder().id(123).name("abc").phone("15625702083").age(24).build())
                 .flatMap(this::success);
-    }
-
-
-    @GetMapping("limit")
-    Mono<ResultVo<List<FchatUser>>> getLimit(){
-        return r2dbcEntityTemplate.select(FchatUser.class).from("fchat_user").all().collectList().flatMap(this::success);
-    }
-
-    @GetMapping("insert")
-    Mono<ResultVo<FchatUser>> insertUserData(){
-        return r2dbcEntityTemplate.insert(FchatUser.class).using(FchatUser.builder().build()).flatMap(this::success);
     }
 }

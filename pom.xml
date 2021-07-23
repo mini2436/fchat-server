@@ -79,12 +79,6 @@
             <version>${jjwt.version}</version>
             <scope>runtime</scope>
         </dependency>
-        <!--MySQL异步驱动-->
-        <dependency>
-            <groupId>dev.miku</groupId>
-            <artifactId>r2dbc-mysql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
         <!--SpringBoot测试-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
