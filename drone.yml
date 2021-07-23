@@ -66,7 +66,7 @@ steps:
         - docker rmi fchat-ws:dev
         - cd /root/fchat-server/drone/src
         - docker build -f ./dockerfile-ws -t fchat-ws:dev .
-        - docker run -itd --name fchat-ws-dev simple-ws:dev
+        - docker run -itd --name fchat-ws-dev fchat-ws:dev
 volumes:
   - name: cache
     host:
