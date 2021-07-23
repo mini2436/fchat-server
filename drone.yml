@@ -1,29 +1,28 @@
 kind: pipeline
 name: fchat-server后端项目自动化构建
 steps:
-  - name: 【Maven】项目编译
+  - name: 工程编译
     image: maven:3.8.1-openjdk-17
     volumes:
       - name: cache
         path: /root/.m2
     commands:
       - mvn clean package -Dmaven.test.skip=true
-  - name: 【Jar,dockerfile-api】文件推送
-    image: appleboy/drone-scp
-    settings:
-      host: 10.0.0.6
-      username: root
-      password: Wuxiunan1
-      port: 22
-      script:
-        - cd /drone/src
-        - ls -al
-      target:
-        - /root/fchat-server
-        - /root/fchat-server
-      source:
-        - ./fchat-api/target/fchat-api-0.0.1-dev.jar
-        - ./dockerfile-api
+      - cd /drone/src
+      - ls -al
+#  - name: 构建文件推送
+#    image: appleboy/drone-scp
+#    settings:
+#      host: 10.0.0.6
+#      username: root
+#      password: Wuxiunan1
+#      port: 22
+#      target:
+#        - /root/fchat-server
+#        - /root/fchat-server
+#      source:
+#        - ./fchat-api/target/fchat-api-0.0.1-dev.jar
+#        - ./dockerfile-api
 #  - name: 【Docker】构建
 #    image: appleboy/drone-ssh
 #    settings:
