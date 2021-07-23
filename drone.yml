@@ -50,7 +50,7 @@ steps:
         - docker rmi fchat-msg:dev
         - cd /root/fchat-server/drone/src
         - docker build -f ./dockerfile-msg -t fchat-msg:dev .
-        - docker run -itd --name fchat-msg-dev -p 40010:40010 fchat-msg:dev
+        - docker run -itd --name fchat-msg-dev fchat-msg:dev
 
   - name: WS服务构建
     image: appleboy/drone-ssh
@@ -66,7 +66,7 @@ steps:
         - docker rmi fchat-ws:dev
         - cd /root/fchat-server/drone/src
         - docker build -f ./dockerfile-ws -t fchat-ws:dev .
-        - docker run -itd --name fchat-ws-dev -p 40010:40010 simple-ws:dev
+        - docker run -itd --name fchat-ws-dev simple-ws:dev
 volumes:
   - name: cache
     host:
