@@ -23,20 +23,9 @@ steps:
       username: root
       password: Wuxiunan1
       port: 22
-      target:
-        - /root/fchat-server
-        - /root/fchat-server
-        - /root/fchat-server
-        - /root/fchat-server
-        - /root/fchat-server
-        - /root/fchat-server
+      target: /root/fchat-server
       source:
-        - /drone/fchat-api-0.0.1-dev.jar
-        - /drone/dockerfile-api
-        - /drone/fchat-msg-0.0.1-dev.jar
-        - /drone/dockerfile-msg
-        - /drone/fchat-ws-0.0.1-dev.jar
-        - /drone/dockerfile-ws
+        - /drone/*
 
 #  - name: 【Docker】构建
 #    image: appleboy/drone-ssh
