@@ -9,7 +9,10 @@ steps:
     commands:
       - mvn clean package -Dmaven.test.skip=true
       - cd /drone/src
-      - ls
+      - ls /drone/src
+      - echo ----------------------------------------------------------
+      - ls /
+      - echo ----------------------------------------------------------
       - cp dockerfile-api /data/dockerfile-api
       - cp fchat-api/target/fchat-api-0.0.1-dev.jar /data/fchat-api-0.0.1-dev.jar
       - cp dockerfile-msg /data/dockerfile-msg
