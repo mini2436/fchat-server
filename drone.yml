@@ -8,13 +8,6 @@ steps:
         path: /root/.m2
     commands:
       - mvn clean package -Dmaven.test.skip=true
-      - cd /drone/src
-      - cp dockerfile-api /drone/dockerfile-api
-      - cp fchat-api/target/fchat-api-0.0.1-dev.jar /drone/fchat-api-0.0.1-dev.jar
-      - cp dockerfile-msg /drone/dockerfile-msg
-      - cp fchat-msg/target/fchat-msg-0.0.1-dev.jar /drone/fchat-msg-0.0.1-dev.jar
-      - cp dockerfile-ws /drone/dockerfile-ws
-      - cp fchat-ws/target/fchat-ws-0.0.1-dev.jar /drone/fchat-ws-0.0.1-dev.jar
 
   - name: 构建文件推送
     image: appleboy/drone-scp
@@ -27,65 +20,54 @@ steps:
       source:
         - /drone/*
 
-#  - name: 【Docker】构建
-#    image: appleboy/drone-ssh
-#    settings:
-#      host: 42.193.5.8
-#      username: root
-#      password: Wuxiunan1
-#      port: 22
-#      script:
-#        - echo -------------- 进入构建目录 --------------
-#        - cd /root/simple-fchat-api-dev/drone/src/target
-#        - echo -------------- 停止docker服务 --------------
-#        - docker stop simple-his-release
-#        - echo -------------- 删除docker容器 --------------
-#        - docker rm simple-his-release
-#        - echo -------------- 删除历史docker镜像 --------------
-#        - docker rmi simple-his:release
-#        - echo -------------- 构建docker镜像 --------------
-#        - docker build -t simple-his:release .
-#        - echo -------------- 启动docker服务 --------------
-#        - docker run -itd --name simple-his-release  -v /logs/simple-fchat-api-dev:/logs -p 1080:1080 simple-his:release
-#  - name: 【Nginx】代理配置更新
-#    image: appleboy/drone-ssh
-#    settings:
-#      host: 116.62.17.98
-#      username: root
-#      password: Qweewq123321
-#      port: 22
-#      script:
-#        - echo -------------- 进入Nginx配置目录 --------------
-#        - cd /usr/local/nginx/conf/confs/
-#        - echo -------------- 创建临时配置文件 --------------
-#        - touch fchat-api-dev
-#        - echo -------------- 写入反向代理配置信息 --------------
-#        - echo 'server { '>> fchat-api-dev
-#        - echo '     server_name fchat-api-dev.mini2436.xyz;' >> fchat-api-dev
-#        - echo '     listen 443 ssl;' >> fchat-api-dev
-#        - echo '     location / {' >> fchat-api-dev
-#        - echo '         proxy_pass http://42.193.5.8:40010;' >> fchat-api-dev
-#        - echo '         proxy_read_timeout 300s;' >> fchat-api-dev
-#        - echo '         proxy_send_timeout 300s;' >> fchat-api-dev
-#        - echo '         proxy_set_header Host $host;' >> fchat-api-dev
-#        - echo '         proxy_set_header X-Real-IP $remote_addr;' >> fchat-api-dev
-#        - echo '         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' >> fchat-api-dev
-#        - echo '     }' >> fchat-api-dev
-#        - echo '    ssl_certificate /home/chen/nginx-https/nginx-ssl/*.mini2436.xyz_chain.crt;' >> fchat-api-dev
-#        - echo '    ssl_certificate_key /home/chen/nginx-https/nginx-ssl/*.mini2436.xyz_key.key;' >> fchat-api-dev
-#        - echo '}' >> fchat-api-dev
-#        - echo 'server {' >> fchat-api-dev
-#        - echo '    listen 80;' >> fchat-api-dev
-#        - echo '    server_name fchat-api-dev.mini2436.xyz;' >> fchat-api-dev
-#        - echo '    rewrite ^(.*)$ https://${server_name}$1 permanent;' >> fchat-api-dev
-#        - echo '}' >> fchat-api-dev
-#        - echo -------------- 覆盖原有配置文件 --------------
-#        - mv -f fchat-api-dev chen-fchat-api-dev-release.conf
-#        - echo -------------- 验证Nginx配置文件 --------------
-#        - cd /usr/local/nginx/sbin/
-#        - ./nginx -t
-#        - echo -------------- 重启Nginx --------------
-#        - ./nginx -s reload
+  - name: API服务构建
+    image: appleboy/drone-ssh
+    settings:
+      host: 10.0.0.6
+      username: root
+      password: Wuxiunan1
+      port: 22
+      script:
+        - echo -------------- docker 构建api服务 --------------
+        - cd /root/fchat-server/drone/src/fchat-api/target
+        - docker stop fchat-api-dev
+        - docker rm fchat-api-dev
+        - docker rmi fchat-api:dev
+        - cd /root/fchat-server/drone/src
+        - docker build -f ./dockerfile-api -t fchat-api:dev .
+        - docker run -itd --name fchat-api-dev -p 40010:40010 fchat-msg:dev
+
+  - name: MSG服务构建
+    image: appleboy/drone-ssh
+    settings:
+      host: 10.0.0.6
+      username: root
+      password: Wuxiunan1
+      port: 22
+      script:
+        - cd /root/fchat-server/drone/src/fchat-msg/target
+        - docker stop fchat-msg-dev
+        - docker rm fchat-msg-dev
+        - docker rmi fchat-msg:dev
+        - cd /root/fchat-server/drone/src
+        - docker build -f ./dockerfile-msg -t fchat-msg:dev .
+        - docker run -itd --name fchat-msg-dev -p 40010:40010 fchat-msg:dev
+
+  - name: WS服务构建
+    image: appleboy/drone-ssh
+    settings:
+      host: 10.0.0.6
+      username: root
+      password: Wuxiunan1
+      port: 22
+      script:
+        - cd /root/fchat-server/drone/src/fchat-ws/target
+        - docker stop fchat-ws-dev
+        - docker rm fchat-ws-dev
+        - docker rmi fchat-ws:dev
+        - cd /root/fchat-server/drone/src
+        - docker build -f ./dockerfile-ws -t fchat-ws:dev .
+        - docker run -itd --name fchat-ws-dev -p 40010:40010 simple-ws:dev
 volumes:
   - name: cache
     host:
