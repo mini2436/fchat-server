@@ -8,8 +8,8 @@ steps:
         path: /root/.m2
     commands:
       - mvn clean package -Dmaven.test.skip=true
-      - mv -f /drone/src/api-dockerfile /drone/src/target
-  - name: 【Jar,api-dockerfile】文件推送
+      - mv -f /drone/src/dockerfile-api /drone/src/target
+  - name: 【Jar,dockerfile-api】文件推送
     image: appleboy/drone-scp
     settings:
       host: 10.0.0.6
@@ -21,7 +21,7 @@ steps:
         - /root/simple-fchat-api-dev
       source:
         - /drone/src/target/simple-his-0.0.1-SNAPSHOT.jar
-        - /drone/src/target/api-dockerfile
+        - /drone/src/target/dockerfile-api
   - name: 【Docker】构建
     image: appleboy/drone-ssh
     settings:

@@ -1,4 +1,0 @@
-FROM adoptopenjdk:16-jre-hotspot
-MAINTAINER mini2436
-ADD simple-his-0.0.1-SNAPSHOT.jar /simple-his-0.0.1-SNAPSHOT.jar
-ENTRYPOINT ["java","-jar","/simple-his-0.0.1-SNAPSHOT.jar"]
