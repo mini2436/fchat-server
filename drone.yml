@@ -9,20 +9,35 @@ steps:
     commands:
       - mvn clean package -Dmaven.test.skip=true
       - cd /drone/src
-      - ls -al
-#  - name: 构建文件推送
-#    image: appleboy/drone-scp
-#    settings:
-#      host: 10.0.0.6
-#      username: root
-#      password: Wuxiunan1
-#      port: 22
-#      target:
-#        - /root/fchat-server
-#        - /root/fchat-server
-#      source:
-#        - ./fchat-api/target/fchat-api-0.0.1-dev.jar
-#        - ./dockerfile-api
+      - cp dockerfile-api /dockerfile-api
+      - cp fchat-api/target/fchat-api-0.0.1-dev.jar /fchat-api-0.0.1-dev.jar
+      - cp dockerfile-msg /dockerfile-msg
+      - cp fchat-msg/target/fchat-msg-0.0.1-dev.jar /fchat-msg-0.0.1-dev.jar
+      - cp dockerfile-ws /dockerfile-ws
+      - cp fchat-ws/target/fchat-ws-0.0.1-dev.jar /fchat-ws-0.0.1-dev.jar
+
+  - name: 构建文件推送
+    image: appleboy/drone-scp
+    settings:
+      host: 10.0.0.6
+      username: root
+      password: Wuxiunan1
+      port: 22
+      target:
+        - /root/fchat-server
+        - /root/fchat-server
+        - /root/fchat-server
+        - /root/fchat-server
+        - /root/fchat-server
+        - /root/fchat-server
+      source:
+        - /fchat-api-0.0.1-dev.jar
+        - /dockerfile-api
+        - /fchat-msg-0.0.1-dev.jar
+        - /dockerfile-msg
+        - /fchat-ws-0.0.1-dev.jar
+        - /dockerfile-ws
+
 #  - name: 【Docker】构建
 #    image: appleboy/drone-ssh
 #    settings:
