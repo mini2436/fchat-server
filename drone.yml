@@ -9,17 +9,12 @@ steps:
     commands:
       - mvn clean package -Dmaven.test.skip=true
       - cd /drone/src
-      - ls /drone/src
-      - echo ----------------------------------------------------------
-      - ls /
-      - echo ----------------------------------------------------------
-      - cp dockerfile-api /data/dockerfile-api
-      - cp fchat-api/target/fchat-api-0.0.1-dev.jar /data/fchat-api-0.0.1-dev.jar
-      - cp dockerfile-msg /data/dockerfile-msg
-      - cp fchat-msg/target/fchat-msg-0.0.1-dev.jar /data/fchat-msg-0.0.1-dev.jar
-      - cp dockerfile-ws /data/dockerfile-ws
-      - cp fchat-ws/target/fchat-ws-0.0.1-dev.jar /data/fchat-ws-0.0.1-dev.jar
-      - ls /data
+      - cp dockerfile-api /drone/dockerfile-api
+      - cp fchat-api/target/fchat-api-0.0.1-dev.jar /drone/fchat-api-0.0.1-dev.jar
+      - cp dockerfile-msg /drone/dockerfile-msg
+      - cp fchat-msg/target/fchat-msg-0.0.1-dev.jar /drone/fchat-msg-0.0.1-dev.jar
+      - cp dockerfile-ws /drone/dockerfile-ws
+      - cp fchat-ws/target/fchat-ws-0.0.1-dev.jar /drone/fchat-ws-0.0.1-dev.jar
 
   - name: 构建文件推送
     image: appleboy/drone-scp
@@ -36,12 +31,12 @@ steps:
         - /root/fchat-server
         - /root/fchat-server
       source:
-        - /fchat-api-0.0.1-dev.jar
-        - /dockerfile-api
-        - /fchat-msg-0.0.1-dev.jar
-        - /dockerfile-msg
-        - /fchat-ws-0.0.1-dev.jar
-        - /dockerfile-ws
+        - /drone/fchat-api-0.0.1-dev.jar
+        - /drone/dockerfile-api
+        - /drone/fchat-msg-0.0.1-dev.jar
+        - /drone/dockerfile-msg
+        - /drone/fchat-ws-0.0.1-dev.jar
+        - /drone/dockerfile-ws
 
 #  - name: 【Docker】构建
 #    image: appleboy/drone-ssh
