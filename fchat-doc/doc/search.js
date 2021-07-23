@@ -68,6 +68,10 @@ api[2].list.push({
     order: '4',
     desc: '根据当前用户的登录Token获取当前用户的信息',
 });
+api[2].list.push({
+    order: '5',
+    desc: '注销本次的账号登录',
+});
 api.push({
     alias: 'dict',
     order: '4',

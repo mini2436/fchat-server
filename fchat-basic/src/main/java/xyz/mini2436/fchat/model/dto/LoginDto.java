@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -22,6 +23,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 public class LoginDto implements Serializable {
+    @Serial
     private static final long serialVersionUID = 2037284732715392387L;
     /**
      * 手机号

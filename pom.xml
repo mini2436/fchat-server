@@ -27,6 +27,7 @@
         <jjwt.version>0.11.2</jjwt.version>
         <hutool.version>5.7.3</hutool.version>
         <mapstruct.version>1.5.0.Beta1</mapstruct.version>
+        <mapstruct-lombok.version>0.2.0</mapstruct-lombok.version>
     </properties>
 
     <dependencies>
@@ -46,7 +47,13 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <scope>provided</scope>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok-mapstruct-binding</artifactId>
+            <version>${mapstruct-lombok.version}</version>
         </dependency>
         <!-- hutool工具包 -->
         <dependency>
@@ -96,19 +103,5 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

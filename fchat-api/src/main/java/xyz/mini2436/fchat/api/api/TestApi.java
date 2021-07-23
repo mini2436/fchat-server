@@ -3,12 +3,15 @@ package xyz.mini2436.fchat.api.api;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import xyz.mini2436.fchat.api.model.po.mongo.TestDocument;
+import xyz.mini2436.fchat.api.model.po.mysql.FchatUser;
 import xyz.mini2436.fchat.api.model.po.mysql.TestTable;
 import xyz.mini2436.fchat.api.model.vo.ApiVo;
+import xyz.mini2436.fchat.api.repository.FchatUserRepository;
 import xyz.mini2436.fchat.api.repository.TestDocumentRepository;
 import xyz.mini2436.fchat.api.repository.TestTableRepository;
 import xyz.mini2436.fchat.api.utils.JsonUtil;
@@ -33,6 +36,8 @@ public class TestApi extends ApiVo {
     private final ReactiveStringRedisTemplate reactiveStringRedisTemplate;
     private final TestTableRepository testTableRepository;
     private final TestDocumentRepository testDocumentRepository;
+    private final FchatUserRepository fchatUserRepository;
+    private final R2dbcEntityTemplate r2dbcEntityTemplate;
 
     /**
      * Redis测试接口
@@ -97,5 +102,16 @@ public class TestApi extends ApiVo {
         return testDocumentRepository
                 .insert(TestDocument.builder().id(123).name("abc").phone("15625702083").age(24).build())
                 .flatMap(this::success);
+    }
+
+
+    @GetMapping("limit")
+    Mono<ResultVo<List<FchatUser>>> getLimit(){
+        return r2dbcEntityTemplate.select(FchatUser.class).from("fchat_user").all().collectList().flatMap(this::success);
+    }
+
+    @GetMapping("insert")
+    Mono<ResultVo<FchatUser>> insertUserData(){
+        return r2dbcEntityTemplate.insert(FchatUser.class).using(FchatUser.builder().build()).flatMap(this::success);
     }
 }

@@ -1,9 +1,11 @@
 package xyz.mini2436.fchat.api.utils;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import xyz.mini2436.fchat.api.system.FchatYmlConfig;
+import xyz.mini2436.fchat.exceptions.ParameterException;
 
 /**
  * 密码工具类
@@ -23,6 +25,9 @@ public class PasswordUtil {
      * @return 加密后的密文密码
      */
     public String strEncryption(String password){
+        if (StrUtil.hasBlank(password)){
+            throw new ParameterException("加密字符串为空");
+        }
         return String.valueOf(SecureUtil.hmacSha1(generateKey()).digestHex(password));
     }
 

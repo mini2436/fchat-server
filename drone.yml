@@ -1,0 +1,90 @@
+kind: pipeline
+name: main分支自动化构建
+steps:
+  - name: 【Maven】项目编译
+    image: maven:3.8.1-openjdk-17
+    volumes:
+      - name: cache
+        path: /root/.m2
+    commands:
+      - mvn clean package -Dmaven.test.skip=true
+      - mv -f /drone/src/api-dockerfile /drone/src/target
+  - name: 【Jar,api-dockerfile】文件推送
+    image: appleboy/drone-scp
+    settings:
+      host: 10.0.0.6
+      username: root
+      password: Wuxiunan1
+      port: 22
+      target:
+        - /root/simple-fchat-api-dev
+        - /root/simple-fchat-api-dev
+      source:
+        - /drone/src/target/simple-his-0.0.1-SNAPSHOT.jar
+        - /drone/src/target/api-dockerfile
+  - name: 【Docker】构建
+    image: appleboy/drone-ssh
+    settings:
+      host: 42.193.5.8
+      username: root
+      password: Wuxiunan1
+      port: 22
+      script:
+        - echo -------------- 进入构建目录 --------------
+        - cd /root/simple-fchat-api-dev/drone/src/target
+        - echo -------------- 停止docker服务 --------------
+        - docker stop simple-his-release
+        - echo -------------- 删除docker容器 --------------
+        - docker rm simple-his-release
+        - echo -------------- 删除历史docker镜像 --------------
+        - docker rmi simple-his:release
+        - echo -------------- 构建docker镜像 --------------
+        - docker build -t simple-his:release .
+        - echo -------------- 启动docker服务 --------------
+        - docker run -itd --name simple-his-release  -v /logs/simple-fchat-api-dev:/logs -p 1080:1080 simple-his:release
+  - name: 【Nginx】代理配置更新
+    image: appleboy/drone-ssh
+    settings:
+      host: 116.62.17.98
+      username: root
+      password: Qweewq123321
+      port: 22
+      script:
+        - echo -------------- 进入Nginx配置目录 --------------
+        - cd /usr/local/nginx/conf/confs/
+        - echo -------------- 创建临时配置文件 --------------
+        - touch fchat-api-dev
+        - echo -------------- 写入反向代理配置信息 --------------
+        - echo 'server { '>> fchat-api-dev
+        - echo '     server_name fchat-api-dev.mini2436.xyz;' >> fchat-api-dev
+        - echo '     listen 443 ssl;' >> fchat-api-dev
+        - echo '     location / {' >> fchat-api-dev
+        - echo '         proxy_pass http://42.193.5.8:40010;' >> fchat-api-dev
+        - echo '         proxy_read_timeout 300s;' >> fchat-api-dev
+        - echo '         proxy_send_timeout 300s;' >> fchat-api-dev
+        - echo '         proxy_set_header Host $host;' >> fchat-api-dev
+        - echo '         proxy_set_header X-Real-IP $remote_addr;' >> fchat-api-dev
+        - echo '         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' >> fchat-api-dev
+        - echo '     }' >> fchat-api-dev
+        - echo '    ssl_certificate /home/chen/nginx-https/nginx-ssl/*.mini2436.xyz_chain.crt;' >> fchat-api-dev
+        - echo '    ssl_certificate_key /home/chen/nginx-https/nginx-ssl/*.mini2436.xyz_key.key;' >> fchat-api-dev
+        - echo '}' >> fchat-api-dev
+        - echo 'server {' >> fchat-api-dev
+        - echo '    listen 80;' >> fchat-api-dev
+        - echo '    server_name fchat-api-dev.mini2436.xyz;' >> fchat-api-dev
+        - echo '    rewrite ^(.*)$ https://${server_name}$1 permanent;' >> fchat-api-dev
+        - echo '}' >> fchat-api-dev
+        - echo -------------- 覆盖原有配置文件 --------------
+        - mv -f fchat-api-dev chen-fchat-api-dev-release.conf
+        - echo -------------- 验证Nginx配置文件 --------------
+        - cd /usr/local/nginx/sbin/
+        - ./nginx -t
+        - echo -------------- 重启Nginx --------------
+        - ./nginx -s reload
+volumes:
+  - name: cache
+    host:
+      path: /root/.m2
+trigger:
+  branch:
+    - master

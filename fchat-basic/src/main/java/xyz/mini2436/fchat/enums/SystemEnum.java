@@ -27,11 +27,11 @@ public enum SystemEnum {
     /**
      * 登录的用户redis数据存储
      */
-    REDIS_LOGIN_USERINFO_PATH("FCHAT:USER:LOGIN:USERINFO"),
+    REDIS_LOGIN_USERINFO_PATH("FCHAT:USER:LOGIN:USERINFO:"),
     /**
      * 登录的用户redis数据存储
      */
-    REDIS_LOGIN_TOKEN_PATH("FCHAT:USER:LOGIN:TOKEN"),
+    REDIS_LOGIN_TOKEN_PATH("FCHAT:USER:LOGIN:TOKEN:"),
     /**
      * Web登录设备
      */

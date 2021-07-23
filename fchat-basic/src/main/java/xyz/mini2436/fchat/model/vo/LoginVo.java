@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,6 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class LoginVo implements Serializable {
+    @Serial
     private static final long serialVersionUID = 2037284732715392387L;
     /**
      * 登录成功的认证

@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import xyz.mini2436.fchat.api.model.po.mysql.FchatUser;
+import xyz.mini2436.fchat.model.dto.RegisterUserDto;
 import xyz.mini2436.fchat.model.dto.UpdateUserDto;
 import xyz.mini2436.fchat.model.vo.LoginVo;
 
@@ -39,4 +40,11 @@ public interface UserMapper {
      * @return 返回转换的用户数据
      */
     FchatUser updateUserDtoToUser(UpdateUserDto updateUserDto);
+
+    /**
+     * 将注册用户数据封装为数据库用户po对象
+     * @param registerUserDto 注册用户数据
+     * @return 返回转换后的用户数据
+     */
+    FchatUser registerUserDtoToUser(RegisterUserDto registerUserDto);
 }

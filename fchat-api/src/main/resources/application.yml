@@ -21,6 +21,8 @@ fchat:
   noneCertificationUrl:
     - POST:/user
     - POST:/user/register
+    - GET:/test/limit
+    - GET:/test/insert
   seaweedFs:
     url: https://fs.mini2436.xyz
     windowsTempFilePath: C:\\Users\\58499\\projects\\idea-project\\fchat-server\\temp\\

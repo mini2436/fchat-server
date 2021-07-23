@@ -12,6 +12,7 @@ import xyz.mini2436.fchat.api.service.UserService;
 import xyz.mini2436.fchat.api.utils.PasswordUtil;
 import xyz.mini2436.fchat.enums.SystemEnum;
 import xyz.mini2436.fchat.model.dto.LoginDto;
+import xyz.mini2436.fchat.model.dto.RegisterUserDto;
 import xyz.mini2436.fchat.model.dto.UpdateUserDto;
 import xyz.mini2436.fchat.model.vo.LoginVo;
 import xyz.mini2436.fchat.model.vo.ResultVo;
@@ -34,18 +35,17 @@ public class UserApi extends ApiVo {
     /**
      * 注册用户接口
      *
-     * @param user 用户的注册信息封装
+     * @param dto 用户的注册信息封装
      * @return 返回注册成功的用户
      */
     @PostMapping("register")
-    Mono<ResultVo<LoginVo>> adduser(@Validated @RequestBody FchatUser user) {
+    Mono<ResultVo<LoginVo>> adduser(@Validated @RequestBody RegisterUserDto dto) {
         // 转换请求参数
-        return Mono.just(user).map(requestUser -> {
-                    requestUser.setPassword(passwordUtil.strEncryption(requestUser.getPassword()));
+        return Mono.just(dto).map(registerUserDto -> {
+                    FchatUser requestUser = userMapper.registerUserDtoToUser(registerUserDto);
+                    requestUser.setPassword(passwordUtil.strEncryption(dto.getPassword()));
                     requestUser.setUserId(IdUtil.getSnowflake().nextId());
-                    requestUser.setCreatedBy(-1L);
                     requestUser.setCreatedTime(System.currentTimeMillis());
-                    requestUser.setRevision(0);
                     requestUser.setDelStatus(0);
                     return requestUser;
                 }
@@ -69,6 +69,7 @@ public class UserApi extends ApiVo {
 
     /**
      * 更新自己的用户数据
+     *
      * @param dto 更新的用户数据dto封装
      * @return 返回更新后的用户数据
      */
@@ -91,5 +92,15 @@ public class UserApi extends ApiVo {
                 ctx.get(SystemEnum.WEBFLUX_CONTEXT_DATA_USER_INFO.getContent()),
                 ctx.get(SystemEnum.WEBFLUX_CONTEXT_DATA_USER_TOKEN.getContent())
         )));
+    }
+
+    /**
+     * 注销本次的账号登录
+     *
+     * @return 返回当前账号的注销状态
+     */
+    @PutMapping("logout")
+    Mono<ResultVo<String>> logout() {
+        return userService.logout().flatMap(this::success);
     }
 }
