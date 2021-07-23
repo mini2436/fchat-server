@@ -15,6 +15,7 @@ steps:
       - cp fchat-msg/target/fchat-msg-0.0.1-dev.jar /fchat-msg-0.0.1-dev.jar
       - cp dockerfile-ws /dockerfile-ws
       - cp fchat-ws/target/fchat-ws-0.0.1-dev.jar /fchat-ws-0.0.1-dev.jar
+      - ls /
 
   - name: 构建文件推送
     image: appleboy/drone-scp
