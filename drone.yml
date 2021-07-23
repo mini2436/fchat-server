@@ -34,7 +34,7 @@ steps:
         - docker rmi fchat-api:dev
         - cd /root/fchat-server/drone/src
         - docker build -f ./dockerfile-api -t fchat-api:dev .
-        - docker run -itd --name fchat-api-dev -p 40010:40010 fchat-msg:dev
+        - docker run -itd --name fchat-api-dev -p 40010:40010 fchat-api:dev
 
   - name: MSG服务构建
     image: appleboy/drone-ssh
