@@ -9,13 +9,13 @@ steps:
     commands:
       - mvn clean package -Dmaven.test.skip=true
       - cd /drone/src
-      - cp dockerfile-api /dockerfile-api
-      - cp fchat-api/target/fchat-api-0.0.1-dev.jar /fchat-api-0.0.1-dev.jar
-      - cp dockerfile-msg /dockerfile-msg
-      - cp fchat-msg/target/fchat-msg-0.0.1-dev.jar /fchat-msg-0.0.1-dev.jar
-      - cp dockerfile-ws /dockerfile-ws
-      - cp fchat-ws/target/fchat-ws-0.0.1-dev.jar /fchat-ws-0.0.1-dev.jar
-      - ls /
+      - cp dockerfile-api /data/dockerfile-api
+      - cp fchat-api/target/fchat-api-0.0.1-dev.jar /data/fchat-api-0.0.1-dev.jar
+      - cp dockerfile-msg /data/dockerfile-msg
+      - cp fchat-msg/target/fchat-msg-0.0.1-dev.jar /data/fchat-msg-0.0.1-dev.jar
+      - cp dockerfile-ws /data/dockerfile-ws
+      - cp fchat-ws/target/fchat-ws-0.0.1-dev.jar /data/fchat-ws-0.0.1-dev.jar
+      - ls /data
 
   - name: 构建文件推送
     image: appleboy/drone-scp
