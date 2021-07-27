@@ -78,7 +78,7 @@ steps:
         - docker rmi fchat-doc:dev
         - cd /root/fchat-server/drone/src
         - docker build -f ./dockerfile-doc -t fchat-doc:dev .
-        - docker run -itd --name fchat-doc-dev -p 40040:40040 fchat-doc:dev
+        - docker run -itd --name fchat-doc-dev -p 40040:80 fchat-doc:dev
 
 volumes:
   - name: cache
