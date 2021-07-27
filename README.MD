@@ -1,5 +1,6 @@
 # FChat-Server
-
+## 项目自动构建状态 
+[![Build Status](https://drone.mini2436.xyz/api/badges/mini2436/FChat-Server/status.svg?ref=refs/heads/dev)](https://drone.mini2436.xyz/mini2436/FChat-Server)
 ## 项目简介
 
 - 本项目用于2021年下半年面试项目展示，无商业性质，仅作个人的技能展示。项目整体基于SpringBoot2.5.2版本构建，整体架构在WebFlux的异步交互体系之上，数据库采用R2DBC的异步方案，项目使用Docker 镜像进行容器化部署，方便后续进行Kubernetes的集群迁移。日志收集采用了较为轻量的LOKI日志系统，与Granfana相互集成，进行日志的可视化分析也能方便的对系统运行情况进行监控。

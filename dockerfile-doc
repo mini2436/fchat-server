@@ -1,0 +1,3 @@
+FROM nginx
+MAINTAINER mini2436
+ADD ./doc/* /usr/share/nginx/html/

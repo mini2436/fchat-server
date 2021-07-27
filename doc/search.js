@@ -79,6 +79,14 @@ api.push({
     desc: '数据字典',
     list: []
 })
+api[3].list.push({
+    order: '1',
+    desc: '系统请求状态码',
+});
+api[3].list.push({
+    order: '2',
+    desc: '业务状态码',
+});
 document.onkeydown = keyDownSearch;
 function keyDownSearch(e) {
     const theEvent = e;

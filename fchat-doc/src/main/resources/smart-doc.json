@@ -3,23 +3,39 @@
   "allInOne": true,
   "isStrict": true,
   "coverOld": true,
-  "outPath": "./doc/",
-  "projectName": "",
+  "outPath": "../doc/",
+  "projectName": "fchat",
+  "coverOld": true,
   "allInOneDocFileName": "fchat接口文档.html",
-  "revisionLogs": [
-    {
-      "version": "0.0.1-dev",
-      "status": "创建状态",
-      "author": "mini2436",
-      "remarks": "面试项目API接口文档"
-    }
-  ],
   "requestHeaders": [
     {
       "name": "fchat-token",
       "type": "string",
       "desc": "该值在登陆接口中返回,后续接口调用必传",
       "required": true
+    }
+  ],
+  "dataDictionaries": [
+    {
+      "title": "系统请求状态码",
+      "enumClassName": "xyz.mini2436.fchat.enums.ResultEnum",
+      "codeField": "code",
+      "descField": "content"
+    },
+    {
+      "title": "业务状态码",
+      "enumClassName": "xyz.mini2436.fchat.enums.BusinessEnum",
+      "codeField": "code",
+      "descField": "content"
+    }
+  ],
+  "revisionLogs": [
+    {
+      "version": "dev-v0.0.1",
+      "revisionTime": "2021年7月27日",
+      "status": "创建",
+      "author": "mini2436",
+      "remarks": "接口文档完善"
     }
   ]
 }
