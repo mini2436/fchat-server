@@ -1,89 +1,116 @@
 let api = [];
 api.push({
-    alias: 'SystemApi',
+    alias: 'FriendApi',
     order: '1',
-    link: '系统api',
-    desc: '系统API',
+    link: '好友相关api',
+    desc: '好友相关API',
     list: []
 })
 api[0].list.push({
     order: '1',
-    desc: '上传文件',
+    desc: '获取当前用户的所有好友列表数据',
 });
 api[0].list.push({
     order: '2',
-    desc: '根据文件的Fid获取文件的访问连接',
+    desc: '获取指定好友Id的详细信息数据',
 });
 api[0].list.push({
+    order: '3',
+    desc: '删除一个自己的好友',
+});
+api[0].list.push({
+    order: '4',
+    desc: '获取自己的好友申请列表',
+});
+api[0].list.push({
+    order: '5',
+    desc: '通过指定的好友申请',
+});
+api.push({
+    alias: 'SystemApi',
+    order: '2',
+    link: '系统api',
+    desc: '系统API',
+    list: []
+})
+api[1].list.push({
+    order: '1',
+    desc: '上传文件',
+});
+api[1].list.push({
+    order: '2',
+    desc: '根据文件的Fid获取文件的访问连接',
+});
+api[1].list.push({
     order: '3',
     desc: '根据文件的Fid删除文件在文件服务器上面的存储',
 });
 api.push({
     alias: 'TestApi',
-    order: '2',
+    order: '3',
     link: '测试api',
     desc: '测试API',
     list: []
 })
-api[1].list.push({
+api[2].list.push({
     order: '1',
     desc: 'Redis测试接口',
 });
-api[1].list.push({
+api[2].list.push({
     order: '2',
     desc: 'Mysql异步测试接口',
 });
-api[1].list.push({
+api[2].list.push({
     order: '3',
     desc: '根据id查询数据库中的测试数据',
 });
-api[1].list.push({
+api[2].list.push({
     order: '4',
     desc: '获取系统中所有的测试数据',
 });
-api[1].list.push({
+api[2].list.push({
     order: '5',
     desc: '添加mongoDB文档数据',
 });
 api.push({
     alias: 'UserApi',
-    order: '3',
+    order: '4',
     link: '用户api提供用户数据的相关操作',
     desc: '用户API提供用户数据的相关操作',
     list: []
 })
-api[2].list.push({
+api[3].list.push({
     order: '1',
     desc: '注册用户接口',
 });
-api[2].list.push({
+api[3].list.push({
     order: '2',
     desc: '系统账户登录',
 });
-api[2].list.push({
+api[3].list.push({
     order: '3',
     desc: '更新自己的用户数据',
 });
-api[2].list.push({
+api[3].list.push({
     order: '4',
     desc: '根据当前用户的登录Token获取当前用户的信息',
 });
-api[2].list.push({
+api[3].list.push({
     order: '5',
     desc: '注销本次的账号登录',
 });
 api.push({
     alias: 'dict',
-    order: '4',
+    order: '5',
     link: 'dict_list',
     desc: '数据字典',
     list: []
 })
-api[3].list.push({
+api[4].list.push({
     order: '1',
     desc: '系统请求状态码',
 });
-api[3].list.push({
+api[4].list.push({
     order: '2',
     desc: '业务状态码',
 });

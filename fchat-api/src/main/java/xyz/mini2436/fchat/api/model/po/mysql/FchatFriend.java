@@ -11,34 +11,40 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 测试表
+ * 好友数据表封装
  *
  * @author mini2436
- * @date 2021-07-08 15:52
+ * @date 2021-07-28 16:43
  **/
 @Data
 @Table
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TestTable implements Serializable {
+public class FchatFriend implements Serializable {
     @Serial
-    private static final long serialVersionUID = -4819361865776646944L;
+    private static final long serialVersionUID = 2092355870225783756L;
+
     /**
      * 主键
      */
     @Id
-    private Integer id;
+    private Long id;
+
     /**
-     * 名称
+     * 用户ID
      */
-    private String name;
+    private Long userId;
+
     /**
-     * 手机号
+     * 好友用户ID
      */
-    private String phone;
+    private Long friend;
+
     /**
-     * 年龄
+     * 创建时间
      */
-    private Integer age;
+    private Long createdTime;
+
+
 }

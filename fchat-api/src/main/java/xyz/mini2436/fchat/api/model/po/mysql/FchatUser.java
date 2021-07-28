@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -22,6 +23,7 @@ import java.io.Serializable;
 @Builder
 public class FchatUser implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -879197555055416437L;
 
     /**
