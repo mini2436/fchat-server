@@ -10,8 +10,8 @@ import xyz.mini2436.fchat.api.model.po.mysql.TestTable;
 /**
  * 测试jpa
  *
- * @author: mini2436
- * @date: 2021-07-08 15:57
+ * @author mini2436
+ * @date 2021-07-08 15:57
  **/
 public interface TestTableRepository extends ReactiveSortingRepository<TestTable,Integer> {
     /**

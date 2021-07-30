@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import xyz.mini2436.fchat.api.model.po.mysql.FchatUser;
+import xyz.mini2436.fchat.model.vo.FriendVo;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Fchat用户Dao封装操作
@@ -71,4 +73,15 @@ public interface FchatUserRepository extends ReactiveSortingRepository<FchatUser
         select * from fchat_user limit :#{#limitMap.limit}
     """)
     Flux<FchatUser> testQuery(@Param(value = "limitMap") Map<String,Integer> limitMap);
+
+    /**
+     * 根据用户ids查询用户列表数据
+     * @param userIds 用户的id集合数据
+     * @return 返回列表数据
+     */
+    @Modifying
+    @Query("""
+        select user_id,nick_name,avatar from fchat_user where user_id in :userIds
+    """)
+    Flux<FriendVo> findUserIdInList(@Param("userIds") Set<Long> userIds);
 }

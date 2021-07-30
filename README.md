@@ -43,7 +43,7 @@
 
 ## 项目简介
 
-项目整体基于SpringBoot2.5.2版本构建，整体架构在WebFlux的异步交互体系之上。采用WebFlux的原因是服务器体量小,据说这个对内存要求没有Servlet服务器要求高,所以就准备尝试一波。整体体验下来除了启动速度快一些，并没有相比Tomcat的传统Servlet服务器表现出什么特别的优势。为了WebFlux能发挥出正常水平项目中的各个中间件的连接客户端也都调整为了Reactive版本，Redis与MongoDB都是如此，当然MySQL客户端也使用的是R2DBC，网络请求采用的Spring提供的WebClient异步客户端。项目中用了JDK14以后的一些语法，建议采用JDK16进行编译（2021-07最新版本为16），17应该也是完美兼容的。
+项目整体基于SpringBoot2.5.2版本构建，整体架构在WebFlux的异步交互体系之上。采用WebFlux的原因是服务器体量小,据说这个对内存要求没有Servlet服务器要求高,且写法上相比传统JAVA写法更接近搬砖,所以就准备尝试一波。整体体验下来除了启动速度快一些，并没有相比Tomcat的传统Servlet服务器表现出什么特别的优势。为了WebFlux能发挥出正常水平项目中的各个中间件的连接客户端也都调整为了Reactive版本，Redis与MongoDB都是如此，当然MySQL客户端也使用的是R2DBC，网络请求采用的Spring提供的WebClient异步客户端。项目中用了JDK14以后的一些语法，建议采用JDK16进行编译（2021-07最新版本为16），17应该也是完美兼容的。
 
 总结：WebFlux目前来讲就是一垃圾，并没有什么卵用，建议对性能吞吐量有要求的上Vert.X
 
@@ -71,13 +71,13 @@
 
 ## 项目文档
 
-### 接口文档（自动基于项目最新版本进行构建）
+### 接口文档
 
 [项目接口文档自动化构建访问地址(smart-doc + nginx +docker进行搭建)](https://fchat-doc.mini2436.xyz/fchat%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3.html)
 
 ![image-20210728091952926](https://resource.mini2436.xyz/uploads/2021/07/image-20210728091952926.png)
 
-### 数据库文档（自动基于项目最新版本进行构建）
+### 数据库文档
 
 [项目数据库文档自动化构建访问地址(screw + nginx + docker进行搭建)](https://fchat-doc.mini2436.xyz/fchat%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E6%A1%A3.html)
 

@@ -59,7 +59,7 @@ public class FriendApi extends ApiVo {
      * @return 返回删除后的对象
      */
     @DeleteMapping("/{friendUserId}")
-    Mono<ResultVo<FriendDetailedVo>> deleteByUserId(@Validated @PathVariable @NotNull Long friendUserId) {
+    Mono<ResultVo<Boolean>> deleteByUserId(@Validated @PathVariable @NotNull Long friendUserId) {
         return Mono.deferContextual(ctx -> friendService.deleteByUserId(ctx.get(SystemEnum.WEBFLUX_CONTEXT_DATA_USER_ID.getContent()), friendUserId))
                 .flatMap(this::success);
     }

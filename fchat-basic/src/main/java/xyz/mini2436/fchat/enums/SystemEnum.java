@@ -24,6 +24,9 @@ public enum SystemEnum {
      * webflux上下文关系数据存储userInfo
      */
     WEBFLUX_CONTEXT_DATA_USER_TOKEN("userToken"),
+
+
+
     /**
      * 登录的用户redis数据存储
      */
@@ -32,6 +35,9 @@ public enum SystemEnum {
      * 登录的用户redis数据存储
      */
     REDIS_LOGIN_TOKEN_PATH("FCHAT:USER:LOGIN:TOKEN:"),
+
+
+
     /**
      * Web登录设备
      */

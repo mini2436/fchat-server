@@ -42,4 +42,8 @@ public class FriendDetailedVo implements Serializable {
      * 出生日期
      */
     private Date birthday;
+    /**
+     * 好友添加时间
+     */
+    private Date createFriendTime;
 }
