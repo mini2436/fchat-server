@@ -86,4 +86,4 @@ volumes:
       path: /root/.m2
 trigger:
   branch:
-    - dev
+    - webflux_dev
