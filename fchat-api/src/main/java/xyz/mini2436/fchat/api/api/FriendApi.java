@@ -94,8 +94,9 @@ public class FriendApi extends ApiVo {
 
     /**
      * 向指定用户发送好友申请
-     *
      * @param dto 请求参数封装
+     * @param friendId 好友ID
+     * @return 返回发送成功的状态
      */
     @PostMapping("apply/{friendId}")
     Mono<ResultVo<Boolean>> apply(@Validated ApplyFriendDto dto , @PathVariable Long friendId) {
