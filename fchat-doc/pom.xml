@@ -14,7 +14,7 @@
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
-        <smart-doc.version>2.0.6</smart-doc.version>
+        <smart-doc.version>2.2.4</smart-doc.version>
         <screw.version>1.0.5</screw.version>
     </properties>
 

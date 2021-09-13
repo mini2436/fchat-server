@@ -26,6 +26,10 @@ api[0].list.push({
     order: '5',
     desc: '通过指定的好友申请',
 });
+api[0].list.push({
+    order: '6',
+    desc: '向指定用户发送好友申请',
+});
 api.push({
     alias: 'SystemApi',
     order: '2',

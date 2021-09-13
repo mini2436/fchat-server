@@ -27,4 +27,18 @@ public interface SystemConstant {
 
     }
 
+    /**
+     * 数据库删除状态常量
+     */
+    interface DataBaseDelStatus{
+        /**
+         * 未删除
+          */
+        Integer NOT_DELETE = 0;
+        /**
+         * 已删除
+         */
+        Integer DELETE = 1;
+    }
+
 }

@@ -14,6 +14,7 @@ import xyz.mini2436.fchat.api.repository.FchatUserRepository;
 import xyz.mini2436.fchat.api.system.FchatYmlConfig;
 import xyz.mini2436.fchat.api.utils.JsonUtil;
 import xyz.mini2436.fchat.api.utils.PasswordUtil;
+import xyz.mini2436.fchat.constant.SystemConstant;
 import xyz.mini2436.fchat.enums.SystemEnum;
 import xyz.mini2436.fchat.exceptions.DatabaseException;
 import xyz.mini2436.fchat.exceptions.ParameterException;
@@ -50,11 +51,11 @@ public class UserService {
     public Mono<LoginVo> addUser(FchatUser user) {
         return fchatUserRepository
                 // 校验当前手机号是否已经注册
-                .findByMobilePhoneAndDelStatus(user.getMobilePhone(), 0)
+                .findByMobilePhoneAndDelStatus(user.getMobilePhone(), SystemConstant.DataBaseDelStatus.NOT_DELETE)
                 .count().map(count -> count == 0)
                 .flatMap(queryStatus -> queryStatus ? Mono.just(fchatUserRepository) : Mono.error(new DatabaseException("当前手机号码已被注册")))
                 // 校验当前邮箱是否已经被注册
-                .flatMap(repository -> repository.findByEmailAndDelStatus(user.getEmail(), 0).count().map(count -> count == 0))
+                .flatMap(repository -> repository.findByEmailAndDelStatus(user.getEmail(), SystemConstant.DataBaseDelStatus.NOT_DELETE).count().map(count -> count == 0))
                 .flatMap(queryStatus -> queryStatus ? Mono.just(fchatUserRepository) : Mono.error(new DatabaseException("当前邮箱已被注册")))
                 // 保存当前注册数据
                 .flatMap(repository -> repository.addOneUser(user))
@@ -72,8 +73,8 @@ public class UserService {
         return dto.flatMap(loginDto -> {
             // 根据登录的手机号或者邮箱分别查询用户信息
             Flux<FchatUser> queryUser = StrUtil.hasBlank(loginDto.getMobilePhone())
-                    ? fchatUserRepository.findByEmailAndDelStatus(loginDto.getEmail(), 0)
-                    : fchatUserRepository.findByMobilePhoneAndDelStatus(loginDto.getMobilePhone(), 0);
+                    ? fchatUserRepository.findByEmailAndDelStatus(loginDto.getEmail(), SystemConstant.DataBaseDelStatus.NOT_DELETE)
+                    : fchatUserRepository.findByMobilePhoneAndDelStatus(loginDto.getMobilePhone(), SystemConstant.DataBaseDelStatus.NOT_DELETE);
             // 判定用户信息是否存在 不存在则返回失败异常 有则将当前数据库的用户信息传递到下一流程处理
             return queryUser.count().map(count -> count == 0).flatMap(existStatus -> existStatus ? Mono.error(new DatabaseException("当前用户信息未注册")) : queryUser.next());
         })

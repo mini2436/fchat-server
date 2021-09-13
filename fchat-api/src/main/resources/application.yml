@@ -17,6 +17,7 @@ spring:
     host: 116.62.17.98
     password: 123456
     database: 3
+    username: default
 fchat:
   noneCertificationUrl:
     - POST:/user

@@ -16,6 +16,7 @@ import xyz.mini2436.fchat.api.repository.FchatUserRepository;
 import xyz.mini2436.fchat.constant.SystemConstant;
 import xyz.mini2436.fchat.exceptions.DatabaseException;
 import xyz.mini2436.fchat.exceptions.MessageException;
+import xyz.mini2436.fchat.model.dto.ApplyFriendDto;
 import xyz.mini2436.fchat.model.vo.FriendApplyVo;
 import xyz.mini2436.fchat.model.vo.FriendDetailedVo;
 import xyz.mini2436.fchat.model.vo.FriendVo;
@@ -52,7 +53,7 @@ public class FriendService {
         return fchatFriendRepository
                 // 查询指定用户的所有好友记录
                 .getAll(userId).defaultIfEmpty(new FchatFriend()).map(fchatFriend -> {
-                    if (Objects.isNull(fchatFriend.getUserId())){
+                    if (Objects.isNull(fchatFriend.getUserId())) {
                         throw new MessageException("系统中没有任何好友记录");
                     }
                     return fchatFriend;
@@ -81,21 +82,21 @@ public class FriendService {
         // 检验是否拥有查看该好友详细信息的合法性
         return fchatFriendRepository
                 // 查看好友是否存在于好友关系表中
-                .checkFriend(userId,friendUserId)
+                .checkFriend(userId, friendUserId)
                 // 没有数据给一个没有数据的空对象,防止因为空对象导致整个Mono流终止处理
                 .defaultIfEmpty(FchatFriend.builder().build())
                 .map(fchatFriend -> {
                     // 没有权限查看该用户数据返回异常信息
-                    if (Objects.isNull(fchatFriend.getUserId())){
+                    if (Objects.isNull(fchatFriend.getUserId())) {
                         throw new DatabaseException("您无权限查看该用户的数据信息");
                     }
                     // 有权限查看则返回当前好友的添加时间继续下一步操作
                     return new Date(fchatFriend.getCreatedTime());
-                    })
-                .flatMap(friendCreatedTime ->{
+                })
+                .flatMap(friendCreatedTime -> {
                     // 转化为好友详细数据
                     Mono<FchatUser> userById = fchatUserRepository.findById(friendUserId);
-                    return userById.map(user -> friendMapper.userToFriendDetailedVo(user,friendCreatedTime));
+                    return userById.map(user -> friendMapper.userToFriendDetailedVo(user, friendCreatedTime));
                 });
     }
 
@@ -107,12 +108,12 @@ public class FriendService {
      * @return 返回被删除的用户数据
      */
     public Mono<Boolean> deleteByUserId(Long userId, Long friendUserId) {
-        return fchatFriendRepository.checkFriend(userId,friendUserId)
+        return fchatFriendRepository.checkFriend(userId, friendUserId)
                 // 没有数据给一个没有数据的空对象,防止因为空对象导致整个Mono流终止处理
                 .defaultIfEmpty(FchatFriend.builder().build())
                 .map(fchatFriend -> {
                     // 没有权限查看该用户数据返回异常信息
-                    if (Objects.isNull(fchatFriend.getUserId())){
+                    if (Objects.isNull(fchatFriend.getUserId())) {
                         throw new MessageException("该好友目前与你不是好友关系无需删除");
                     }
                     fchatFriendRepository.deleteById(fchatFriend.getId());
@@ -130,7 +131,7 @@ public class FriendService {
      */
     public Mono<List<FriendApplyVo>> getFriendApplyList(Long userId, Integer pageIndex, Integer pageSize) {
         return fchatFriendRepository
-                .getApplyList(userId,pageIndex-1,(pageIndex-1)*pageSize)
+                .getApplyList(userId, pageIndex - 1, (pageIndex - 1) * pageSize)
                 .collectList();
 
     }
@@ -150,11 +151,11 @@ public class FriendService {
                 .defaultIfEmpty(FchatFriendApply.builder().build())
                 .flatMap(fchatFriendApply -> {
                     if (Objects.isNull(fchatFriendApply.getFriendUserId())
-                            || fchatFriendApply.getFriendUserId().equals(userId)){
-                        return Mono.error(new DatabaseException("您当前无权限操作该申请信息"));
+                            || fchatFriendApply.getFriendUserId().equals(userId)) {
+                        return Mono.error(new MessageException("您当前无权限操作该申请信息"));
                     }
                     return Mono.just(fchatFriendApply);
-                }).flatMap(fchatFriendApply ->{
+                }).flatMap(fchatFriendApply -> {
                     // 写入好友数据
                     FchatFriend fchatFriend = FchatFriend.builder()
                             .id(IdUtil.getSnowflake().nextId())
@@ -162,18 +163,62 @@ public class FriendService {
                             .userId(fchatFriendApply.getApplyUserId())
                             .createdTime(System.currentTimeMillis())
                             .build();
-                    fchatFriendRepository.insertOne(fchatFriend).subscribe(rows ->{
-                        if (rows<1){
+                    fchatFriendRepository.insertOne(fchatFriend).subscribe(rows -> {
+                        if (rows < 1) {
                             throw new DatabaseException("好友数据添加失败");
                         }
                     });
                     return Mono.just(fchatFriendApply);
-                }).flatMap(fchatFriendApply ->{
+                }).flatMap(fchatFriendApply -> {
                     // 更新审核状态
                     fchatFriendApply.setApplyStatus(SystemConstant.FriendApplyStatus.PASS);
                     return fchatFriendApplyRepository
                             .save(fchatFriendApply)
                             .map(fchatFriendApplySave -> Objects.isNull(fchatFriendApplySave) ? Boolean.FALSE : Boolean.TRUE);
                 });
+    }
+
+    /**
+     * 添加好友申请信息
+     *
+     * @param dto 请求参数封装
+     * @return 返回申请状态
+     */
+    public Mono<Boolean> apply(ApplyFriendDto dto) {
+        // 校验申请用户是否已经是好友了
+        return fchatFriendRepository.checkFriend(dto.getApplyUserId(), dto.getFriendUserId()).defaultIfEmpty(FchatFriend.builder().build()).map(fchatFriend -> {
+                    if (Objects.isNull(fchatFriend.getId())) {
+                        Mono.error(new MessageException("申请用户已是你的好友无需再次申请"));
+                    }
+                    return Boolean.TRUE;
+                }
+                // 校验是否已经存在好友申请信息
+        ).flatMap(nextBool -> fchatFriendApplyRepository.findByApplyUserIdAndFriendUserIdAndApplyStatus(dto.getApplyUserId(), dto.getFriendUserId(), SystemConstant.FriendApplyStatus.WAIT)
+                .defaultIfEmpty(FchatFriendApply.builder().build())
+                .flatMap(fchatFriendApply -> {
+                            if (!Objects.isNull(fchatFriendApply.getId())) {
+                                Mono.error(new MessageException("系统中已存在当前信息请不要重复申请"));
+                            }
+                            return Mono.just(true);
+                        }
+                ).flatMap(bool -> fchatFriendApplyRepository.findByApplyUserIdAndFriendUserIdAndApplyStatus(dto.getFriendUserId(), dto.getApplyUserId(), SystemConstant.FriendApplyStatus.WAIT)
+                                .defaultIfEmpty(FchatFriendApply.builder().build())
+                                .flatMap(fchatFriendApply -> {
+                                    if (!Objects.isNull(fchatFriendApply.getId())) {
+                                        Mono.error(new MessageException("系统中已存在当前信息请不要重复申请"));
+                                    }
+                                    return Mono.just(true);
+                                })
+                        // 保存好友申请信息
+                ).flatMap(bool -> {
+                    FchatFriendApply fchatFriendApply = friendMapper.applyFriendDtoToFchatFriendApply(dto);
+                    fchatFriendApply.setApplyContent(dto.getApplyContent());
+                    fchatFriendApply.setApplyTime(System.currentTimeMillis());
+                    fchatFriendApply.setApplyStatus(SystemConstant.FriendApplyStatus.WAIT);
+                    fchatFriendApply.setDelStatus(SystemConstant.DataBaseDelStatus.NOT_DELETE);
+                    return fchatFriendApplyRepository.save(fchatFriendApply).defaultIfEmpty(FchatFriendApply.builder().build());})
+                // 返回处理状态
+                .map(fchatFriendApply -> Objects.isNull(fchatFriendApply.getId()))
+        );
     }
 }
