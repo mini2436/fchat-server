@@ -12,7 +12,7 @@ steps:
   - name: 构建文件推送
     image: appleboy/drone-scp
     settings:
-      host: TX-IP
+      host: 42.193.5.8
       username: BUILD-USERNAME
       password: TX-SECRET
       port: 22
