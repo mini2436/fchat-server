@@ -12,9 +12,9 @@ steps:
   - name: 构建文件推送
     image: appleboy/drone-scp
     settings:
-      host: 10.0.0.6
-      username: root
-      password: Wuxiunan1
+      host: TX-IP
+      username: BUILD-USERNAME
+      password: TX-SECRET
       port: 22
       target: /root/fchat-server
       source:
@@ -23,9 +23,9 @@ steps:
   - name: API服务构建
     image: appleboy/drone-ssh
     settings:
-      host: 10.0.0.6
-      username: root
-      password: Wuxiunan1
+      host: TX-IP
+      username: BUILD-USERNAME
+      password: TX-SECRET
       port: 22
       script:
         - docker stop fchat-api-dev
@@ -38,9 +38,9 @@ steps:
   - name: MSG服务构建
     image: appleboy/drone-ssh
     settings:
-      host: 10.0.0.6
-      username: root
-      password: Wuxiunan1
+      host: TX-IP
+      username: BUILD-USERNAME
+      password: TX-SECRET
       port: 22
       script:
         - docker stop fchat-msg-dev
@@ -53,9 +53,9 @@ steps:
   - name: WS服务构建
     image: appleboy/drone-ssh
     settings:
-      host: 10.0.0.6
-      username: root
-      password: Wuxiunan1
+      host: TX-IP
+      username: BUILD-USERNAME
+      password: TX-SECRET
       port: 22
       script:
         - docker stop fchat-ws-dev
@@ -68,9 +68,9 @@ steps:
   - name: 项目文档服务构建
     image: appleboy/drone-ssh
     settings:
-      host: 10.0.0.6
-      username: root
-      password: Wuxiunan1
+      host: TX-IP
+      username: BUILD-USERNAME
+      password: TX-SECRET
       port: 22
       script:
         - docker stop fchat-doc-dev
@@ -86,4 +86,4 @@ volumes:
       path: /root/.m2
 trigger:
   branch:
-    - webflux_dev
+    - main
