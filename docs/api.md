@@ -42,13 +42,13 @@ data|array|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 38,
-  "msg": "c80m02",
+  "code": 739,
+  "msg": "hqhslk",
   "data": [
     {
-      "userId": 815,
-      "nickName": "irwin.stamm",
-      "avatar": "016e2d"
+      "userId": 646,
+      "nickName": "novella.purdy",
+      "avatar": "3b79f2"
     }
   ]
 }
@@ -80,7 +80,7 @@ friendUserId|int64|需要查询的好友ID|true|-
 
 **Request-example:**
 ```
-curl -X GET -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/friend/455
+curl -X GET -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/friend/770
 ```
 **Response-fields:**
 
@@ -99,14 +99,14 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 782,
-  "msg": "y2uxpw",
+  "code": 379,
+  "msg": "wdrcnn",
   "data": {
-    "userId": 179,
-    "username": "鸿涛.韩",
-    "nickName": "irwin.stamm",
-    "avatar": "1torqz",
-    "birthday": "2021-09-29 16:40:12",
+    "userId": 565,
+    "username": "天翊.胡",
+    "nickName": "novella.purdy",
+    "avatar": "yt0hzk",
+    "birthday": "2021-09-29 16:53:48",
     "createFriendTime": "2021-09-29"
   }
 }
@@ -138,7 +138,7 @@ friendUserId|int64|需要删除的用户ID|true|-
 
 **Request-example:**
 ```
-curl -X DELETE -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/friend/993
+curl -X DELETE -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/friend/11
 ```
 **Response-fields:**
 
@@ -151,8 +151,8 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 557,
-  "msg": "qpayix",
+  "code": 199,
+  "msg": "24yuti",
   "data": true
 }
 ```
@@ -184,7 +184,7 @@ pageSize|int32| 页面条数|true|-
 
 **Request-example:**
 ```
-curl -X GET -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/friend/friendApplyList/768/10
+curl -X GET -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/friend/friendApplyList/846/10
 ```
 **Response-fields:**
 
@@ -202,15 +202,15 @@ data|array|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 640,
-  "msg": "ru9ksv",
+  "code": 42,
+  "msg": "3cgzcn",
   "data": [
     {
-      "id": 566,
-      "applyUserId": 916,
-      "applyNickName": "irwin.stamm",
-      "applyContent": "4j2akt",
-      "applyTime": "2021-09-29 16:40:12"
+      "id": 710,
+      "applyUserId": 510,
+      "applyNickName": "novella.purdy",
+      "applyContent": "5gz4ki",
+      "applyTime": "2021-09-29 16:53:48"
     }
   ]
 }
@@ -242,7 +242,7 @@ id|int64|好友申请数据的ID|true|-
 
 **Request-example:**
 ```
-curl -X PUT -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/friend/pass/700
+curl -X PUT -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/friend/pass/120
 ```
 **Response-fields:**
 
@@ -255,8 +255,8 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 213,
-  "msg": "1c7q7a",
+  "code": 42,
+  "msg": "bdwxvq",
   "data": true
 }
 ```
@@ -295,7 +295,7 @@ applyContent|string|申请添加信息|false|-
 
 **Request-example:**
 ```
-curl -X POST -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/friend/apply/758 --data 'applyUserId=316&applyContent=gl374h&friendUserId=563'
+curl -X POST -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/friend/apply/290 --data 'friendUserId=998&applyUserId=453&applyContent=vbz7hk'
 ```
 **Response-fields:**
 
@@ -308,8 +308,8 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 739,
-  "msg": "g9txzt",
+  "code": 963,
+  "msg": "slfirr",
   "data": true
 }
 ```
@@ -350,11 +350,11 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 992,
-  "msg": "w5u0po",
+  "code": 935,
+  "msg": "ccp3xa",
   "data": {
-    "url": "www.xn---xn--9sw-jh9rh010b.com",
-    "fid": "133"
+    "url": "www.xn---xn--gtq-c24os58l.net",
+    "fid": "88"
   }
 }
 ```
@@ -385,7 +385,7 @@ fid|string|需要获取的文件唯一标识|true|-
 
 **Request-example:**
 ```
-curl -X GET -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/system/fileByFid/133
+curl -X GET -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/system/fileByFid/88
 ```
 **Response-fields:**
 
@@ -400,11 +400,11 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 124,
-  "msg": "vi3nuy",
+  "code": 794,
+  "msg": "at3ryo",
   "data": {
-    "url": "www.xn---xn--9sw-jh9rh010b.com",
-    "fid": "133"
+    "url": "www.xn---xn--gtq-c24os58l.net",
+    "fid": "88"
   }
 }
 ```
@@ -435,7 +435,7 @@ fid|string|需要删除的文件唯一标识|true|-
 
 **Request-example:**
 ```
-curl -X DELETE -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/system/fileByFid/133
+curl -X DELETE -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/system/fileByFid/88
 ```
 **Response-fields:**
 
@@ -448,8 +448,8 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 57,
-  "msg": "12z88r",
+  "code": 908,
+  "msg": "omwzo4",
   "data": true
 }
 ```
@@ -489,8 +489,8 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 986,
-  "msg": "5b7y56",
+  "code": 531,
+  "msg": "4dpbnm",
   "data": {
     "mapKey": {
       "waring": "You may use java.util.Object for Map value; smart-doc can't be handle."
@@ -532,8 +532,8 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 778,
-  "msg": "v7u59z",
+  "code": 58,
+  "msg": "04661l",
   "data": true
 }
 ```
@@ -564,7 +564,7 @@ id|int32|查询的用户主键|true|-
 
 **Request-example:**
 ```
-curl -X GET -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/test/393
+curl -X GET -k -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/test/139
 ```
 **Response-fields:**
 
@@ -581,13 +581,13 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 909,
-  "msg": "pfbbmp",
+  "code": 570,
+  "msg": "u864pg",
   "data": {
-    "id": 905,
-    "name": "鸿涛.韩",
-    "phone": "17050156268",
-    "age": 44
+    "id": 661,
+    "name": "天翊.胡",
+    "phone": "15711952059",
+    "age": 64
   }
 }
 ```
@@ -629,14 +629,14 @@ data|array|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 238,
-  "msg": "m58vzy",
+  "code": 534,
+  "msg": "mbo9xg",
   "data": [
     {
-      "id": 85,
-      "name": "鸿涛.韩",
-      "phone": "17050156268",
-      "age": 44
+      "id": 328,
+      "name": "天翊.胡",
+      "phone": "15711952059",
+      "age": 64
     }
   ]
 }
@@ -679,13 +679,13 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 206,
-  "msg": "r9ut0t",
+  "code": 766,
+  "msg": "5jmley",
   "data": {
-    "id": 995,
-    "name": "鸿涛.韩",
-    "phone": "17050156268",
-    "age": 44
+    "id": 745,
+    "name": "天翊.胡",
+    "phone": "15711952059",
+    "age": 64
   }
 }
 ```
@@ -723,12 +723,12 @@ description|string|个人描述|false|-
 **Request-example:**
 ```
 curl -X POST -k -H 'Content-Type: application/json; charset=utf-8' -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/user/register --data '{
-  "nickName": "irwin.stamm",
-  "mobilePhone": "17050156268",
-  "email": "皓轩.程@hotmail.com",
-  "password": "j9mhtm",
-  "avatar": "22x3km",
-  "description": "lspt1t"
+  "nickName": "novella.purdy",
+  "mobilePhone": "15711952059",
+  "email": "弘文.夏@yahoo.com",
+  "password": "1ezjvc",
+  "avatar": "h6xdol",
+  "description": "0xol8x"
 }'
 ```
 **Response-fields:**
@@ -750,17 +750,17 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 891,
-  "msg": "y7a80c",
+  "code": 497,
+  "msg": "56baas",
   "data": {
-    "token": "l4qkvu",
-    "userId": 719,
-    "username": "鸿涛.韩",
-    "nickName": "irwin.stamm",
-    "mobilePhone": "17050156268",
-    "email": "皓轩.程@hotmail.com",
-    "avatar": "0ih1la",
-    "birthday": "2021-09-29 16:40:12"
+    "token": "u8w57m",
+    "userId": 404,
+    "username": "天翊.胡",
+    "nickName": "novella.purdy",
+    "mobilePhone": "15711952059",
+    "email": "弘文.夏@yahoo.com",
+    "avatar": "fh359j",
+    "birthday": "2021-09-29 16:53:48"
   }
 }
 ```
@@ -795,10 +795,10 @@ equipment|string|当前登录的设备类型|true|-
 **Request-example:**
 ```
 curl -X POST -k -H 'Content-Type: application/json; charset=utf-8' -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/user/ --data '{
-  "mobilePhone": "17050156268",
-  "email": "皓轩.程@hotmail.com",
-  "password": "8jvfkd",
-  "equipment": "5hyysl"
+  "mobilePhone": "15711952059",
+  "email": "弘文.夏@yahoo.com",
+  "password": "0npji5",
+  "equipment": "vz0jfz"
 }'
 ```
 **Response-fields:**
@@ -820,17 +820,17 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 425,
-  "msg": "qvuf0w",
+  "code": 618,
+  "msg": "q0g6u1",
   "data": {
-    "token": "k5p69p",
-    "userId": 256,
-    "username": "鸿涛.韩",
-    "nickName": "irwin.stamm",
-    "mobilePhone": "17050156268",
-    "email": "皓轩.程@hotmail.com",
-    "avatar": "tapr04",
-    "birthday": "2021-09-29 16:40:12"
+    "token": "s6vsmk",
+    "userId": 346,
+    "username": "天翊.胡",
+    "nickName": "novella.purdy",
+    "mobilePhone": "15711952059",
+    "email": "弘文.夏@yahoo.com",
+    "avatar": "s9se03",
+    "birthday": "2021-09-29 16:53:48"
   }
 }
 ```
@@ -866,11 +866,11 @@ avatar|string|头像|false|-
 **Request-example:**
 ```
 curl -X PUT -k -H 'Content-Type: application/json; charset=utf-8' -H 'fchat-token' -i https://fchat-api-dev.mini2436.xyz/user/ --data '{
-  "nickName": "irwin.stamm",
-  "mobilePhone": "17050156268",
-  "email": "皓轩.程@hotmail.com",
-  "password": "3n0ins",
-  "avatar": "5b1ytd"
+  "nickName": "novella.purdy",
+  "mobilePhone": "15711952059",
+  "email": "弘文.夏@yahoo.com",
+  "password": "sxq9e4",
+  "avatar": "msa6sq"
 }'
 ```
 **Response-fields:**
@@ -892,17 +892,17 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 170,
-  "msg": "ms0m6m",
+  "code": 649,
+  "msg": "etjzyo",
   "data": {
-    "token": "e0tcd9",
-    "userId": 179,
-    "username": "鸿涛.韩",
-    "nickName": "irwin.stamm",
-    "mobilePhone": "17050156268",
-    "email": "皓轩.程@hotmail.com",
-    "avatar": "lyc90l",
-    "birthday": "2021-09-29 16:40:12"
+    "token": "46ky9w",
+    "userId": 471,
+    "username": "天翊.胡",
+    "nickName": "novella.purdy",
+    "mobilePhone": "15711952059",
+    "email": "弘文.夏@yahoo.com",
+    "avatar": "vn4tip",
+    "birthday": "2021-09-29 16:53:48"
   }
 }
 ```
@@ -948,17 +948,17 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 475,
-  "msg": "dsobo8",
+  "code": 967,
+  "msg": "s7yykl",
   "data": {
-    "token": "b994yb",
-    "userId": 951,
-    "username": "鸿涛.韩",
-    "nickName": "irwin.stamm",
-    "mobilePhone": "17050156268",
-    "email": "皓轩.程@hotmail.com",
-    "avatar": "ai589r",
-    "birthday": "2021-09-29 16:40:12"
+    "token": "elle30",
+    "userId": 117,
+    "username": "天翊.胡",
+    "nickName": "novella.purdy",
+    "mobilePhone": "15711952059",
+    "email": "弘文.夏@yahoo.com",
+    "avatar": "w1m90b",
+    "birthday": "2021-09-29 16:53:48"
   }
 }
 ```
@@ -996,9 +996,9 @@ data|object|返回请求体定义|-
 **Response-example:**
 ```
 {
-  "code": 312,
-  "msg": "8ofk3u",
-  "data": "ko4s4o"
+  "code": 717,
+  "msg": "ag67pe",
+  "data": "dtlb9a"
 }
 ```
 

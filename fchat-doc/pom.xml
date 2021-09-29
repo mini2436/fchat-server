@@ -56,7 +56,7 @@
                     <execution>
                         <phase>compile</phase>
                         <goals>
-                            <goal>html</goal>
+                            <goal>markdown</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -85,10 +85,10 @@
                     <password>123456</password>
                     <driverClassName>com.mysql.cj.jdbc.Driver</driverClassName>
                     <jdbcUrl>jdbc:mysql://mini2436.xyz:4306/fchat</jdbcUrl>
-                    <fileType>HTML</fileType>
+                    <fileType>MD</fileType>
                     <openOutputDir>false</openOutputDir>
                     <produceType>freemarker</produceType>
-                    <fileName>fchat数据库文档</fileName>
+                    <fileName>..\\docs\database</fileName>
                     <description>该文档仅限用于开发参考，实际开发请以数据库为准</description>
                     <version>${project.version}</version>
                     <title>fchat数据库文档</title>

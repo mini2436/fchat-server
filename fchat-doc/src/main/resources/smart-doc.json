@@ -3,10 +3,10 @@
   "allInOne": true,
   "isStrict": true,
   "coverOld": true,
-  "outPath": "../doc/",
+  "outPath": "../docs/",
   "projectName": "fchat",
   "coverOld": true,
-  "allInOneDocFileName": "fchat接口文档.html",
+  "allInOneDocFileName": "api",
   "requestHeaders": [
     {
       "name": "fchat-token",
