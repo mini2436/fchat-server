@@ -19,6 +19,9 @@ steps:
       target: /root/fchat-server
       source:
         - /drone/*
+      secrets:
+        - source: txip
+          target: txip
 
   - name: 腾讯云API服务构建
     image: appleboy/drone-ssh
