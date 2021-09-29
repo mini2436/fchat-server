@@ -1,10 +1,2 @@
-# docsify <small>3.5</small>
-
-> 一个神奇的文档网站生成器。
-
-- 简单、轻便 (压缩后 ~21kB)
-- 无需生成 html 文件
-- 众多主题
-
-[GitHub](https://github.com/docsifyjs/docsify/)
-[Get Started](#docsify)
+# Fchat
+<p align="center">本项目用于2021年下半年面试项目展示，无商业性质。项目采用MIT许可协议可随意分发,依赖版本全部采用最新版本的相关开源组件,个人编译该项目请参考如下标记的版本,自行解决版本依赖等相关问题.</p>
