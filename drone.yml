@@ -12,7 +12,7 @@ steps:
   - name: 构建文件推送
     image: appleboy/drone-scp
     settings:
-      host: txname
+      host: TX-IP
       username: BUILD-USERNAME
       password: TX-SECRET
       port: 22
@@ -20,8 +20,8 @@ steps:
       source:
         - /drone/*
       secrets:
-        - source: txip
-          target: txip
+        - source: TX-IP
+          target: TX-IP
 
   - name: 腾讯云API服务构建
     image: appleboy/drone-ssh
