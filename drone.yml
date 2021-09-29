@@ -12,19 +12,17 @@ steps:
   - name: 构建文件推送
     image: appleboy/drone-scp
     settings:
-      host: TX-IP
-      username: BUILD-USERNAME
-      password: TX-SECRET
+      host:
+        from_secret: TX-IP
+      username:
+        from_secret: BUILD-USERNAME
+      password:
+        from_secret: TX-SECRET
       port: 22
       target: /root/fchat-server
       source:
         - /drone/*
-      secrets:
-        - source: TX-IP
-          target: TX-IP
-    secrets:
-      - source: TX-IP
-        target: TX-IP
+
   - name: 腾讯云API服务构建
     image: appleboy/drone-ssh
     settings:
