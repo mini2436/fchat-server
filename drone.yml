@@ -1,5 +1,5 @@
 kind: pipeline
-name: fchat-server后端项目自动化构建
+name: fchat-server后端项目自动化构建2
 steps:
   - name: 工程编译
     image: maven:3.8.1-openjdk-17
