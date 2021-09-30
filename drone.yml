@@ -8,92 +8,92 @@ steps:
         path: /root/.m2
     commands:
       - mvn clean package -Dmaven.test.skip=true
-
-  - name: 构建文件推送
-    image: appleboy/drone-scp
-    settings:
-      host:
-        from_secret: TX-IP
-      username:
-        from_secret: BUILD-USERNAME
-      password:
-        from_secret: TX-SECRET
-      port: 22
-      target: /root/fchat-server
-      source:
-        - /drone/*
-
-  - name: 腾讯云API服务构建
-    image: appleboy/drone-ssh
-    settings:
-      host:
-        from_secret: TX-IP
-      username:
-        from_secret: BUILD-USERNAME
-      password:
-        from_secret: TX-SECRET
-      port: 22
-      script:
-        - docker stop fchat-api-dev
-        - docker rm fchat-api-dev
-        - docker rmi fchat-api:dev
-        - cd /root/fchat-server/drone/src
-        - docker build -f ./dockerfile-api -t fchat-api:dev .
-        - docker run -itd --name fchat-api-dev -p 40010:40010 fchat-api:dev
-
-  - name: MSG服务构建
-    image: appleboy/drone-ssh
-    settings:
-      host:
-        from_secret: TX-IP
-      username:
-        from_secret: BUILD-USERNAME
-      password:
-        from_secret: TX-SECRET
-      port: 22
-      script:
-        - docker stop fchat-msg-dev
-        - docker rm fchat-msg-dev
-        - docker rmi fchat-msg:dev
-        - cd /root/fchat-server/drone/src
-        - docker build -f ./dockerfile-msg -t fchat-msg:dev .
-        - docker run -itd --name fchat-msg-dev -p 40020:40020 fchat-msg:dev
-
-  - name: WS服务构建
-    image: appleboy/drone-ssh
-    settings:
-      host:
-        from_secret: TX-IP
-      username:
-        from_secret: BUILD-USERNAME
-      password:
-        from_secret: TX-SECRET
-      port: 22
-      script:
-        - docker stop fchat-ws-dev
-        - docker rm fchat-ws-dev
-        - docker rmi fchat-ws:dev
-        - cd /root/fchat-server/drone/src
-        - docker build -f ./dockerfile-ws -t fchat-ws:dev .
-        - docker run -itd --name fchat-ws-dev -p 40030:40030 fchat-ws:dev
-
-  - name: 项目文档服务构建
-    image: appleboy/drone-ssh
-    settings:
-      host:
-        from_secret: TX-IP
-      username:
-        from_secret: BUILD-USERNAME
-      password:
-        from_secret: TX-SECRET
-      port: 22
-      script:
-        - docker stop fchat-doc-dev
-        - docker rm fchat-doc-dev
-        - docker rmi fchat-doc:dev
-        - cd /root/fchat-server/drone/src
-        - docker build -f ./dockerfile-doc -t fchat-doc:dev .
-        - docker run -itd --name fchat-doc-dev -p 40040:80 fchat-doc:dev
+#
+#  - name: 构建文件推送
+#    image: appleboy/drone-scp
+#    settings:
+#      host:
+#        from_secret: TX-IP
+#      username:
+#        from_secret: BUILD-USERNAME
+#      password:
+#        from_secret: TX-SECRET
+#      port: 22
+#      target: /root/fchat-server
+#      source:
+#        - /drone/*
+#
+#  - name: 腾讯云API服务构建
+#    image: appleboy/drone-ssh
+#    settings:
+#      host:
+#        from_secret: TX-IP
+#      username:
+#        from_secret: BUILD-USERNAME
+#      password:
+#        from_secret: TX-SECRET
+#      port: 22
+#      script:
+#        - docker stop fchat-api-dev
+#        - docker rm fchat-api-dev
+#        - docker rmi fchat-api:dev
+#        - cd /root/fchat-server/drone/src
+#        - docker build -f ./dockerfile-api -t fchat-api:dev .
+#        - docker run -itd --name fchat-api-dev -p 40010:40010 fchat-api:dev
+#
+#  - name: MSG服务构建
+#    image: appleboy/drone-ssh
+#    settings:
+#      host:
+#        from_secret: TX-IP
+#      username:
+#        from_secret: BUILD-USERNAME
+#      password:
+#        from_secret: TX-SECRET
+#      port: 22
+#      script:
+#        - docker stop fchat-msg-dev
+#        - docker rm fchat-msg-dev
+#        - docker rmi fchat-msg:dev
+#        - cd /root/fchat-server/drone/src
+#        - docker build -f ./dockerfile-msg -t fchat-msg:dev .
+#        - docker run -itd --name fchat-msg-dev -p 40020:40020 fchat-msg:dev
+#
+#  - name: WS服务构建
+#    image: appleboy/drone-ssh
+#    settings:
+#      host:
+#        from_secret: TX-IP
+#      username:
+#        from_secret: BUILD-USERNAME
+#      password:
+#        from_secret: TX-SECRET
+#      port: 22
+#      script:
+#        - docker stop fchat-ws-dev
+#        - docker rm fchat-ws-dev
+#        - docker rmi fchat-ws:dev
+#        - cd /root/fchat-server/drone/src
+#        - docker build -f ./dockerfile-ws -t fchat-ws:dev .
+#        - docker run -itd --name fchat-ws-dev -p 40030:40030 fchat-ws:dev
+#
+#  - name: 项目文档服务构建
+#    image: appleboy/drone-ssh
+#    settings:
+#      host:
+#        from_secret: TX-IP
+#      username:
+#        from_secret: BUILD-USERNAME
+#      password:
+#        from_secret: TX-SECRET
+#      port: 22
+#      script:
+#        - docker stop fchat-doc-dev
+#        - docker rm fchat-doc-dev
+#        - docker rmi fchat-doc:dev
+#        - cd /root/fchat-server/drone/src
+#        - docker build -f ./dockerfile-doc -t fchat-doc:dev .
+#        - docker run -itd --name fchat-doc-dev -p 40040:80 fchat-doc:dev
 
 volumes:
   - name: cache
