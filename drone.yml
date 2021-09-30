@@ -26,9 +26,12 @@ steps:
   - name: 腾讯云API服务构建
     image: appleboy/drone-ssh
     settings:
-      host: TX-IP
-      username: BUILD-USERNAME
-      password: TX-SECRET
+      host:
+        from_secret: TX-IP
+      username:
+        from_secret: BUILD-USERNAME
+      password:
+        from_secret: TX-SECRET
       port: 22
       script:
         - docker stop fchat-api-dev
@@ -41,9 +44,12 @@ steps:
   - name: MSG服务构建
     image: appleboy/drone-ssh
     settings:
-      host: TX-IP
-      username: BUILD-USERNAME
-      password: TX-SECRET
+      host:
+        from_secret: TX-IP
+      username:
+        from_secret: BUILD-USERNAME
+      password:
+        from_secret: TX-SECRET
       port: 22
       script:
         - docker stop fchat-msg-dev
@@ -56,9 +62,12 @@ steps:
   - name: WS服务构建
     image: appleboy/drone-ssh
     settings:
-      host: TX-IP
-      username: BUILD-USERNAME
-      password: TX-SECRET
+      host:
+        from_secret: TX-IP
+      username:
+        from_secret: BUILD-USERNAME
+      password:
+        from_secret: TX-SECRET
       port: 22
       script:
         - docker stop fchat-ws-dev
@@ -71,9 +80,12 @@ steps:
   - name: 项目文档服务构建
     image: appleboy/drone-ssh
     settings:
-      host: TX-IP
-      username: BUILD-USERNAME
-      password: TX-SECRET
+      host:
+        from_secret: TX-IP
+      username:
+        from_secret: BUILD-USERNAME
+      password:
+        from_secret: TX-SECRET
       port: 22
       script:
         - docker stop fchat-doc-dev
